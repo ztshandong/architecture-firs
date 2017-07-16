@@ -9,7 +9,7 @@ import javax.annotation.Resource;
  * Created by zhangtao on 2017/7/16.
  */
 @Service
-public class MongoServiceImp {
+public class MongoServiceImp implements MongoService {
     @Resource(name = "mongoLog1Template")
     public MongoTemplate mongoLog1;
     @Resource(name = "mongoLog2Template")
