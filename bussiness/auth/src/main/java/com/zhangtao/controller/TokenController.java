@@ -4,12 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.zhangtao.domain.*;
 import com.zhangtao.domain.user.UserDetails;
 import com.zhangtao.encrypts.EncryHelper;
-import com.zhangtao.service.MongoServiceImp;
+import com.zhangtao.service.MongoService;
+import com.zhangtao.service.RedisService;
 import com.zhangtao.service.RedisServiceImp;
 import com.zhangtao.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +28,9 @@ public class TokenController {
     @Autowired
     private UserService userService;
     @Autowired
-    private RedisServiceImp redisServiceImp;
+    private RedisService redisService;
     @Autowired
-    private MongoServiceImp mongoServiceImp;
+    private MongoService<LogForMongo> logForMongoService;
 
     @ResponseBody
     @RequestMapping(value = "/md5", method = RequestMethod.GET)
@@ -53,17 +53,22 @@ public class TokenController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String Test(@RequestHeader HttpHeaders httpHeaders, String str) throws Exception {
         try {
-            LogForMongo logForMongo1= new LogForMongo();
+            LogForMongo logForMongo1 = new LogForMongo();
             logForMongo1.setHeaders(httpHeaders);
-            mongoServiceImp.mongoLog1.save(logForMongo1);
-            LogForMongo logForMongo2= new LogForMongo();
-            logForMongo2.setRequestParam(str);
-            mongoServiceImp.mongoLog2.save(logForMongo2);
-            LogForMongo logForMongo3= new LogForMongo();
+            logForMongoService.mongo1save(logForMongo1);
+
+            LogForMongo logForMongo3 = new LogForMongo();
             logForMongo3.setHeaders(httpHeaders);
             logForMongo3.setRequestParam(str);
-            mongoServiceImp.mongoLog2.save(logForMongo3);
-            return JSON.toJSONString(logForMongo3);
+            logForMongoService.mongo2save(logForMongo3);
+
+            String s = JSON.toJSONString(logForMongo3);
+
+            if (redisService.authhas(str))
+                System.out.println(redisService.authget(str));
+            else
+                redisService.authset(str, s, 10, TimeUnit.SECONDS);
+            return s;
         } catch (Exception ex) {
             ex.printStackTrace();
             return "";
@@ -75,11 +80,10 @@ public class TokenController {
     public String login(@RequestHeader HttpHeaders httpHeaders, @RequestBody Login login) throws Exception {
         ResponseEx responseEx = new ResponseEx();
         try {
-            if (redisServiceImp.authRedis.hasKey(login.param)) {
+            if (redisService.authhas(login.param)) {
                 responseEx.setCode(ResCode.reprequest.getCode());
             } else {
-                redisServiceImp.IniRedis();
-                redisServiceImp.authops.set(login.param, login.param, 10, TimeUnit.SECONDS);
+                redisService.authset(login.param, login.param, 10, TimeUnit.SECONDS);
                 String key = EncryHelper.RSApriD(login.key);
                 String iv = EncryHelper.RSApriD(login.iv);
                 String userJson = EncryHelper.AESD(login.param, key, iv);
@@ -125,7 +129,7 @@ public class TokenController {
                                     String responsToken = EncryHelper.AESE(entoken, key, iv);
                                     responseEx.setToken(responsToken);
 
-                                    redisServiceImp.authops.set(responsToken, JSON.toJSONString(userInfoForTokenInRedis), 10, TimeUnit.SECONDS);
+                                    redisService.authset(responsToken, JSON.toJSONString(userInfoForTokenInRedis), 10, TimeUnit.SECONDS);
                                 }
                             }
                         }
