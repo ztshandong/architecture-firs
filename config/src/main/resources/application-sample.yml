@@ -1,0 +1,73 @@
+# git中的密码对称加密密钥
+encrypt:
+  key: 123456Abc
+
+# 访问http://localhost:8016/8017的用户名及密码，config.client要与此一致
+security:
+  user:
+    name: username
+    password: password
+# 运行后获取密文，放入git
+# curl username:password@localhost:8016/encrypt -d mysqlpassword
+
+# cloud-config-client就是用application.name与server.port来获取配置
+# 要注意文件名要起好，因为client的spring.application.name要与配置文件前半段一致，注册服务要用
+# 获取时使用ssh方式
+---
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: git@git.oschina.net:proname/configserver.git
+          timeout: 30
+          force-pull: true
+          clone-on-start: true
+      allow-override: true
+  application:
+    name: config-server-cluster
+  profiles: first
+# cloud-config-client端只能指定一个端口，只要这个端口是CONFIG-SERVER-CLUSTERED下面其中一个就行,8016或8017都可以
+server:
+  port: 8016
+# 注册到集群中，这样访问http://localhost:8014
+# 左边显示CONFIG-SERVER-CLUSTERED，就是上面的spring.application.name
+# 右边显示config-server-1，就是eureka.instance.instance-id
+# eureka server如果启用了security则需要填写用户名及密码
+eureka:
+  instance:
+    instance-id: config-server-1
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://user8013:password@localhost:8013/eureka/,http://user8014:password@localhost:8014/eureka/,http://user8015:password@localhost:8015/eureka/
+---
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: git@git.oschina.net:proname/configserver.git
+          timeout: 30
+          force-pull: true
+          clone-on-start: true
+      allow-override: true
+  application:
+    name: config-server-cluster
+  profiles: second
+server:
+  port: 8017
+eureka:
+  instance:
+    instance-id: config-server-2
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://user8013:password@localhost:8013/eureka/,http://user8014:password@localhost:8014/eureka/,http://user8015:password@localhost:8015/eureka/
+
+
+

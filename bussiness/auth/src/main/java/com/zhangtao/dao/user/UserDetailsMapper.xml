@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhangtao.dao.user.UserDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.zhangtao.domain.user.UserDetails" >
+    <constructor >
+      <idArg column="UserDetails_d_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="UserDetails_d_mid" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="UserDetails_d_account" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UserDetails_d_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UserDetails_d_password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UserDetails_d_salt" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UserDetails_d_create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="UserDetails_d_modify_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="UserDetails_d_ts" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <resultMap id="InfoForTokenMap" type="com.zhangtao.domain.user.UserDetails">
+    <result property="dId" column="UserDetails_d_id"  jdbcType="BIGINT" javaType="java.lang.Long"/>
+    <result property="dMid" column="UserDetails_d_mid"  jdbcType="BIGINT" javaType="java.lang.Long"/>
+    <result property="dAccount" column="UserDetails_d_account"  jdbcType="VARCHAR" javaType="java.lang.String"/>
+    <result property="dName" column="UserDetails_d_name"  jdbcType="VARCHAR" javaType="java.lang.String"/>
+    <result property="dPassword" column="UserDetails_d_password"  jdbcType="VARCHAR" javaType="java.lang.String"/>
+  </resultMap>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    UserDetails.d_id as UserDetails_d_id, UserDetails.d_mid as UserDetails_d_mid, UserDetails.d_account as UserDetails_d_account, 
+    UserDetails.d_name as UserDetails_d_name, UserDetails.d_password as UserDetails_d_password, 
+    UserDetails.d_salt as UserDetails_d_salt, UserDetails.d_create_time as UserDetails_d_create_time, 
+    UserDetails.d_modify_time as UserDetails_d_modify_time, UserDetails.d_ts as UserDetails_d_ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhangtao.domain.user.UserDetailsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from u_details UserDetails
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.zhangtao.domain.user.UserDetailsExample" >
+    delete from u_details UserDetails
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insertSelective" parameterType="com.zhangtao.domain.user.UserDetails" >
+    insert into u_details
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dId != null" >
+        d_id,
+      </if>
+      <if test="dMid != null" >
+        d_mid,
+      </if>
+      <if test="dAccount != null" >
+        d_account,
+      </if>
+      <if test="dName != null" >
+        d_name,
+      </if>
+      <if test="dPassword != null" >
+        d_password,
+      </if>
+      <if test="dSalt != null" >
+        d_salt,
+      </if>
+      <if test="dCreateTime != null" >
+        d_create_time,
+      </if>
+      <if test="dModifyTime != null" >
+        d_modify_time,
+      </if>
+      <if test="dTs != null" >
+        d_ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dId != null" >
+        #{dId,jdbcType=BIGINT},
+      </if>
+      <if test="dMid != null" >
+        #{dMid,jdbcType=BIGINT},
+      </if>
+      <if test="dAccount != null" >
+        #{dAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="dName != null" >
+        #{dName,jdbcType=VARCHAR},
+      </if>
+      <if test="dPassword != null" >
+        #{dPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="dSalt != null" >
+        #{dSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="dCreateTime != null" >
+        #{dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dModifyTime != null" >
+        #{dModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dTs != null" >
+        #{dTs,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhangtao.domain.user.UserDetailsExample" resultType="java.lang.Integer" >
+    select count(*) from u_details UserDetails
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update u_details UserDetails
+    <set >
+      <if test="record.dId != null" >
+        UserDetails.d_id = #{record.dId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dMid != null" >
+        UserDetails.d_mid = #{record.dMid,jdbcType=BIGINT},
+      </if>
+      <if test="record.dAccount != null" >
+        UserDetails.d_account = #{record.dAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dName != null" >
+        UserDetails.d_name = #{record.dName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dPassword != null" >
+        UserDetails.d_password = #{record.dPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dSalt != null" >
+        UserDetails.d_salt = #{record.dSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dCreateTime != null" >
+        UserDetails.d_create_time = #{record.dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dModifyTime != null" >
+        UserDetails.d_modify_time = #{record.dModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dTs != null" >
+        UserDetails.d_ts = #{record.dTs,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update u_details UserDetails
+    set UserDetails.d_id = #{record.dId,jdbcType=BIGINT},
+      UserDetails.d_mid = #{record.dMid,jdbcType=BIGINT},
+      UserDetails.d_account = #{record.dAccount,jdbcType=VARCHAR},
+      UserDetails.d_name = #{record.dName,jdbcType=VARCHAR},
+      UserDetails.d_password = #{record.dPassword,jdbcType=VARCHAR},
+      UserDetails.d_salt = #{record.dSalt,jdbcType=VARCHAR},
+      UserDetails.d_create_time = #{record.dCreateTime,jdbcType=TIMESTAMP},
+      UserDetails.d_modify_time = #{record.dModifyTime,jdbcType=TIMESTAMP},
+      UserDetails.d_ts = #{record.dTs,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhangtao.domain.user.UserDetails" >
+    update u_details
+    <set >
+      <if test="dMid != null" >
+        d_mid = #{dMid,jdbcType=BIGINT},
+      </if>
+      <if test="dAccount != null" >
+        d_account = #{dAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="dName != null" >
+        d_name = #{dName,jdbcType=VARCHAR},
+      </if>
+      <if test="dPassword != null" >
+        d_password = #{dPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="dSalt != null" >
+        d_salt = #{dSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="dCreateTime != null" >
+        d_create_time = #{dCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dModifyTime != null" >
+        d_modify_time = #{dModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dTs != null" >
+        d_ts = #{dTs,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where d_id = #{dId,jdbcType=BIGINT}
+  </update>
+</mapper>

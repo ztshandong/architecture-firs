@@ -1,0 +1,37 @@
+logging:
+  config: classpath:logback.xml
+  path: logs
+server:
+  port: 6498
+  session-timeout: 60
+
+mybatis:
+     mapperLocations: classpath:com/zhangtao/dao/*/*.xml
+#     mapperLocations: classpath:*/dao/*.xml
+     typeAliasesPackage: com.zhangtao.dao
+     mapperScanPackage: com.zhangtao.dao
+     configLocation: classpath:mybatis-config.xml
+
+#        感觉这里的classpath是target/classes的path，也就是编译后的路径，如果加上main.java报错找不到xml
+spring:
+  application:
+    name: dbcore
+  cloud:
+    config:
+#      uri:  http://localhost:8639
+      label: master
+      username: username
+      password: password
+      discovery:
+        enabled: true
+        service-id: CONFIG-SERVER-CLUSTER
+  profiles:
+    active: test
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://user8013:password@localhost:8013/eureka/,http://user8014:password@localhost:8014/eureka/,http://user8015:password@localhost:8015/eureka/
+#    eureka-server-port: 8016
+  instance:
+    preferIpAddress: true
+    instance-id: encrypt1

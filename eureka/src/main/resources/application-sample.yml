@@ -1,0 +1,92 @@
+---
+security:
+  user:
+    name: user8013
+    password: password
+server:
+  port: 8013
+eureka:
+  server:
+    enable-self-preservation: false
+#    renewal-percent-threshold: 0.85
+#    #缓存更新时间，默认30s
+#    response-cache-update-interval-ms: 10
+#    #缓存过期时间，默认180s
+#    response-cache-auto-expiration-in-seconds: 30
+#    # 实例过期清理时间间隔，默认60秒
+#    eviction-interval-timer-in-ms: 10
+  instance:
+    hostname: eureka-server
+    instance-id: eureka-cluster-1
+    prefer-ip-address: true
+#    lease-renewal-interval-in-seconds: 20
+#    lease-expiration-duration-in-seconds: 40
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://user8014:password@localhost:8014/eureka/,http://user8015:password@localhost:8015/eureka/
+spring:
+  profiles: first
+---
+security:
+  user:
+    name: user8014
+    password: password
+server:
+  port: 8014
+eureka:
+  server:
+    enable-self-preservation: false
+#    renewal-percent-threshold: 0.85
+#    #缓存更新时间，默认30s
+#    response-cache-update-interval-ms: 10
+#    #缓存过期时间，默认180s
+#    response-cache-auto-expiration-in-seconds: 30
+#    # 实例过期清理时间间隔，默认60秒
+#    eviction-interval-timer-in-ms: 10
+  instance:
+    hostname: eureka-server
+    instance-id: eureka-cluster-1
+    prefer-ip-address: true
+#    lease-renewal-interval-in-seconds: 20
+#    lease-expiration-duration-in-seconds: 40
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://user8013:password@localhost:8013/eureka/,http://user8015:password@localhost:8015/eureka/
+spring:
+  profiles: second
+---
+security:
+  user:
+    name: user8015
+    password: password
+server:
+  port: 8015
+eureka:
+  server:
+    enable-self-preservation: false
+#    renewal-percent-threshold: 0.85
+#    #缓存更新时间，默认30s
+#    response-cache-update-interval-ms: 10
+#    #缓存过期时间，默认180s
+#    response-cache-auto-expiration-in-seconds: 30
+#    # 实例过期清理时间间隔，默认60秒
+#    eviction-interval-timer-in-ms: 10
+  instance:
+    hostname: eureka-server
+    instance-id: eureka-cluster-1
+    prefer-ip-address: true
+#    lease-renewal-interval-in-seconds: 20
+#    lease-expiration-duration-in-seconds: 40
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://user8013:password@localhost:8013/eureka/,http://user8014:password@localhost:8014/eureka/
+spring:
+  profiles: third
+
+
