@@ -5,13 +5,26 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by zhangtao on 2017/7/16.
  */
-public interface RedisService<Object,String> {
-    boolean authhas(Object key);
-    boolean ctrlhas(Object key);
+public interface RedisService<K, V> {
+    boolean authhas(K key);
 
-    void authset(Object var1, String var2, long var3, TimeUnit var5);
-    void ctrlset(Object var1, String var2, long var3, TimeUnit var5);
+    boolean ctrlhas(K key);
 
-    String authget(Object var1);
-    String ctrlget(Object var1);
+    void authset(K var1, String var2, long var3, TimeUnit var5);
+
+    void ctrlset(K var1, String var2, long var3, TimeUnit var5);
+
+    String authget(K var1);
+
+    String ctrlget(K var1);
+
+    void authset(K var1, V var2, long var3, TimeUnit var5);
+
+    void ctrlset(K var1, V var2, long var3, TimeUnit var5);
+
+    V authget(K var1, Class<V> var2);
+
+    V ctrlget(K var1, Class<V> var2);
+
+    Class<V> getClazz();
 }
