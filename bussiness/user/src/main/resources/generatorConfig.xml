@@ -109,11 +109,11 @@
 
         <!--schema="dbo"-->
 
-        <table tableName="u_main" enableCountByExample="true" domainObjectName="UserMain"
+        <table tableName="u_details" enableCountByExample="true" domainObjectName="UserDetails"
                enableUpdateByExample="true" enableDeleteByExample="true"
                enableSelectByExample="true" selectByExampleQueryId="true"
                enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true" alias="UserMain"
+               enableDeleteByPrimaryKey="true" alias="UserDetails"
 
         >
             <!--自动添加分隔符，但是不同数据库分隔符不同，还是建表的时候注意一下比较好-->

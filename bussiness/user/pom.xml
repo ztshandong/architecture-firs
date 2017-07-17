@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zhangtao.auth</groupId>
-    <artifactId>auth</artifactId>
+    <groupId>com.zhangtao.user</groupId>
+    <artifactId>user</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>auth</name>
-    <description>AuthCenter</description>
+    <name>user</name>
+    <description>UserModel</description>
 
     <parent>
         <groupId>com.zhangtao</groupId>
@@ -17,12 +17,6 @@
         <version>0.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
-    <!--<parent>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
-        <!--<version>1.5.4.RELEASE</version>-->
-    <!--</parent>-->
 
     <dependencies>
         <dependency>
@@ -77,11 +71,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
@@ -102,20 +91,14 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -125,29 +108,10 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <!--<resources>-->
-        <!--&lt;!&ndash; maven项目中src源代码下的xml等资源文件编译进classes文件夹，-->
-        <!--注意：如果没有这个，它会自动搜索resources下是否有mapper.xml文件，-->
-        <!--如果没有就会报org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): com.pet.mapper.PetMapper.selectByPrimaryKey&ndash;&gt;-->
-        <!--<resource>-->
-        <!--<directory>src/main/java</directory>-->
-        <!--<includes>-->
-        <!--<include>**/*.xml</include>-->
-        <!--</includes>-->
-        <!--</resource>-->
-
-        <!--&lt;!&ndash;将resources目录下的配置文件编译进classes文件  &ndash;&gt;-->
-        <!--<resource>-->
-        <!--<directory>src/main/resources</directory>-->
-        <!--</resource>-->
-        <!--</resources>-->
     </build>
 
 

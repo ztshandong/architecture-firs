@@ -14,15 +14,6 @@
       <arg column="UserDetails_d_ts" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
-
-  <resultMap id="InfoForTokenMap" type="com.zhangtao.domain.user.UserDetails">
-    <result property="dId" column="UserDetails_d_id"  jdbcType="BIGINT" javaType="java.lang.Long"/>
-    <result property="dMid" column="UserDetails_d_mid"  jdbcType="BIGINT" javaType="java.lang.Long"/>
-    <result property="dAccount" column="UserDetails_d_account"  jdbcType="VARCHAR" javaType="java.lang.String"/>
-    <result property="dName" column="UserDetails_d_name"  jdbcType="VARCHAR" javaType="java.lang.String"/>
-    <result property="dPassword" column="UserDetails_d_password"  jdbcType="VARCHAR" javaType="java.lang.String"/>
-  </resultMap>
-
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -108,6 +99,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+
+  <insert id="batchInsert" parameterType="com.zhangtao.domain.user.UserDetails">
+    insert into u_details(d_id, d_mid,d_account,d_name,d_password,d_salt,d_create_time,d_modify_time,d_ts) values
+    <foreach collection="list" item="UserDetails" index="index"
+             separator=",">
+      (#{UserDetails.dId},
+      #{UserDetails.dMid},
+      #{UserDetails.dAccount},
+      #{UserDetails.dName},
+      #{UserDetails.dPassword},
+      #{UserDetails.dSalt},
+      #{UserDetails.dCreateTime},
+      #{UserDetails.dModifyTime},
+      #{UserDetails.dTs} )
+    </foreach>
+  </insert>
+
   <insert id="insertSelective" parameterType="com.zhangtao.domain.user.UserDetails" >
     insert into u_details
     <trim prefix="(" suffix=")" suffixOverrides="," >

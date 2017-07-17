@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhangtao.dao.user.UserMainMapper" >
+  <resultMap id="BaseResultMap" type="com.zhangtao.domain.user.UserMain" >
+    <constructor >
+      <idArg column="UserMain_m_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="UserMain_m_flag" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="UserMain_m_multi_login" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="UserMain_m_create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="UserMain_m_modify_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="UserMain_m_ts" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    UserMain.m_id as UserMain_m_id, UserMain.m_flag as UserMain_m_flag, UserMain.m_multi_login as UserMain_m_multi_login, 
+    UserMain.m_create_time as UserMain_m_create_time, UserMain.m_modify_time as UserMain_m_modify_time, 
+    UserMain.m_ts as UserMain_m_ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhangtao.domain.user.UserMainExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from u_main UserMain
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.zhangtao.domain.user.UserMainExample" >
+    delete from u_main UserMain
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insertSelective" parameterType="com.zhangtao.domain.user.UserMain" >
+    insert into u_main
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mId != null" >
+        m_id,
+      </if>
+      <if test="mFlag != null" >
+        m_flag,
+      </if>
+      <if test="mMultiLogin != null" >
+        m_multi_login,
+      </if>
+      <if test="mCreateTime != null" >
+        m_create_time,
+      </if>
+      <if test="mModifyTime != null" >
+        m_modify_time,
+      </if>
+      <if test="mTs != null" >
+        m_ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mId != null" >
+        #{mId,jdbcType=BIGINT},
+      </if>
+      <if test="mFlag != null" >
+        #{mFlag,jdbcType=INTEGER},
+      </if>
+      <if test="mMultiLogin != null" >
+        #{mMultiLogin,jdbcType=INTEGER},
+      </if>
+      <if test="mCreateTime != null" >
+        #{mCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mModifyTime != null" >
+        #{mModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mTs != null" >
+        #{mTs,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhangtao.domain.user.UserMainExample" resultType="java.lang.Integer" >
+    select count(*) from u_main UserMain
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update u_main UserMain
+    <set >
+      <if test="record.mId != null" >
+        UserMain.m_id = #{record.mId,jdbcType=BIGINT},
+      </if>
+      <if test="record.mFlag != null" >
+        UserMain.m_flag = #{record.mFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.mMultiLogin != null" >
+        UserMain.m_multi_login = #{record.mMultiLogin,jdbcType=INTEGER},
+      </if>
+      <if test="record.mCreateTime != null" >
+        UserMain.m_create_time = #{record.mCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mModifyTime != null" >
+        UserMain.m_modify_time = #{record.mModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mTs != null" >
+        UserMain.m_ts = #{record.mTs,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update u_main UserMain
+    set UserMain.m_id = #{record.mId,jdbcType=BIGINT},
+      UserMain.m_flag = #{record.mFlag,jdbcType=INTEGER},
+      UserMain.m_multi_login = #{record.mMultiLogin,jdbcType=INTEGER},
+      UserMain.m_create_time = #{record.mCreateTime,jdbcType=TIMESTAMP},
+      UserMain.m_modify_time = #{record.mModifyTime,jdbcType=TIMESTAMP},
+      UserMain.m_ts = #{record.mTs,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhangtao.domain.user.UserMain" >
+    update u_main
+    <set >
+      <if test="mFlag != null" >
+        m_flag = #{mFlag,jdbcType=INTEGER},
+      </if>
+      <if test="mMultiLogin != null" >
+        m_multi_login = #{mMultiLogin,jdbcType=INTEGER},
+      </if>
+      <if test="mCreateTime != null" >
+        m_create_time = #{mCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mModifyTime != null" >
+        m_modify_time = #{mModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mTs != null" >
+        m_ts = #{mTs,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where m_id = #{mId,jdbcType=BIGINT}
+  </update>
+</mapper>
