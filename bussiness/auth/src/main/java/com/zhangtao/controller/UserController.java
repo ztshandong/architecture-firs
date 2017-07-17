@@ -3,6 +3,7 @@ package com.zhangtao.controller;
 import com.alibaba.fastjson.JSON;
 import com.zhangtao.domain.user.UserDetails;
 import com.zhangtao.encrypts.EncryHelper;
+import com.zhangtao.service.RedisService;
 import com.zhangtao.service.RedisServiceImp;
 import com.zhangtao.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private RedisServiceImp redisServiceImp;
+    private RedisService<Object,String> redisService;
 
     @RequestMapping(value = "/beforeLogin/", method = RequestMethod.POST)
     @ResponseBody
@@ -63,22 +64,21 @@ public class UserController {
 //        return decrypt;
 //    }
 
-//    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-//    @ResponseBody
-//    //@RequestParam(value="name", required=true, defaultValue="0")
-//    public String findById(@PathVariable("id") Long id) {
-//        System.currentTimeMillis();
-//        IniRedis();
-//        if (authRedis.hasKey(Long.toString(id))) {
-//
-//            System.out.println("get from redis");
-//            return authops.get(Long.toString(id));
-//        }
-//        UserDetails userDetails = userService.findById(id);
-//        String value = JSON.toJSONString(userDetails);
-//        authops.set(Long.toString(id), value, 10, TimeUnit.SECONDS);
-//        return value;
-//    }
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    //@RequestParam(value="name", required=true, defaultValue="0")
+    public String findById(@PathVariable("id") Long id) {
+        System.currentTimeMillis();
+        if (redisService.authhas(id)) {
+
+            System.out.println("get from redis");
+            return redisService.authget(id);
+        }
+        UserDetails userDetails = userService.findById(id);
+        String value = JSON.toJSONString(userDetails);
+        redisService.authset(id, value, 10, TimeUnit.SECONDS);
+        return value;
+    }
 }
 
 

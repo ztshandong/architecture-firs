@@ -5,8 +5,11 @@ import java.util.List;
 import com.zhangtao.domain.user.UserDetails;
 import com.zhangtao.domain.user.UserDetailsExample;
 import org.apache.ibatis.annotations.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 @Mapper
+@Component
 public interface UserDetailsMapper {
     @Select({
             "select",

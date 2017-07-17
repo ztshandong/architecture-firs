@@ -64,10 +64,13 @@ public class TokenController {
 
             String s = JSON.toJSONString(logForMongo3);
 
-            if (redisService.authhas(str))
-                System.out.println(redisService.authget(str));
-            else
+            if (redisService.authhas(str)) {
+                String ss = redisService.authget(str).toString();
+                LogForMongo logForMongo=JSON.parseObject(ss,LogForMongo.class);
+                System.out.println(JSON.toJSONString(logForMongo));
+            } else {
                 redisService.authset(str, s, 10, TimeUnit.SECONDS);
+            }
             return s;
         } catch (Exception ex) {
             ex.printStackTrace();

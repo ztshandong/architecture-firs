@@ -11,7 +11,7 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 @EnableFeignClients
-@EnableAutoConfiguration
+//@EnableAutoConfiguration
 @ComponentScan(basePackages={"com.zhangtao"})
 @SpringBootApplication(exclude = MongoAutoConfiguration.class)
 @RefreshScope
