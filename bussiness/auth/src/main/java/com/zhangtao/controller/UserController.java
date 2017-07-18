@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private RedisService<Object,String> redisService;
+    private RedisService redisService;
 
     @RequestMapping(value = "/beforeLogin/", method = RequestMethod.POST)
     @ResponseBody
