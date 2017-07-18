@@ -138,8 +138,6 @@ public class RabbitConfiguration {
         return BindingBuilder.bind(secondQueue()).to(defaultExchange()).with(RabbitQueueEnum.queue2.getType());
     }
 
-
-
     @Bean(name = "secondmessageContainer")
     public SimpleMessageListenerContainer secondmessageContainer() {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(secondConnectionFactory());

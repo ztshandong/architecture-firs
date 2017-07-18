@@ -54,7 +54,7 @@ public class Receiver {
     public void process1(String hello) {
         System.out.println("Receiver hello1: " + hello);
     }
-//
+
 //    @RabbitHandler
 //    @RabbitListener(queues = "hello2", containerFactory = "secondFactory")
 //    public void process2(String hello) {
