@@ -1,18 +1,14 @@
-package com.zhangtao.config;
+package com.zhangtao.config.mqconfig;
 
 /**
  * Created by zhangtao on 2017/7/18.
  */
 
-import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -21,13 +17,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 @Configuration
 public class RabbitConfiguration {
-    public static final String EXCHANGE = "rabbitmq-exchange";
+
     @Value("${rabbitmq.first.host}")
     String host1;
     @Value("${rabbitmq.first.port}")
@@ -56,6 +49,11 @@ public class RabbitConfiguration {
         return iniCachingConnectionFactory(host1, port1, username1, password1, publisherconfirm1);
     }
 
+    @Bean(name = "secondConnectionFactory")
+    public ConnectionFactory secondConnectionFactory() {
+        return iniCachingConnectionFactory(host2, port2, username2, password2, publisherconfirm2);
+    }
+
     CachingConnectionFactory iniCachingConnectionFactory(String host, int port, String username, String password, boolean publisherconfirm) {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setHost(host);
@@ -63,15 +61,9 @@ public class RabbitConfiguration {
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
         connectionFactory.setPublisherConfirms(true);
+        connectionFactory.setPublisherReturns(true);
         connectionFactory.setVirtualHost("/");
         return connectionFactory;
-    }
-
-    @Bean(name = "secondConnectionFactory")
-    public ConnectionFactory secondConnectionFactory(
-
-    ) {
-        return iniCachingConnectionFactory(host2, port2, username2, password2, publisherconfirm2);
     }
 
     @Bean(name = "firstRabbitTemplate")
@@ -81,6 +73,7 @@ public class RabbitConfiguration {
             @Qualifier("firstConnectionFactory") ConnectionFactory connectionFactory
     ) {
         RabbitTemplate firstRabbitTemplate = new RabbitTemplate(connectionFactory);
+        firstRabbitTemplate.setMandatory(true);
         return firstRabbitTemplate;
     }
 
@@ -90,6 +83,7 @@ public class RabbitConfiguration {
             @Qualifier("secondConnectionFactory") ConnectionFactory connectionFactory
     ) {
         RabbitTemplate secondRabbitTemplate = new RabbitTemplate(connectionFactory);
+        secondRabbitTemplate.setMandatory(true);
         return secondRabbitTemplate;
     }
 
@@ -115,46 +109,32 @@ public class RabbitConfiguration {
 
     @Bean(name = "firstQueue")
     public Queue firstQueue() {
-        return new Queue(RabbitQueueEnum.queue1.getType(), true);
+        return new Queue(RabbitRoutingKeyEnum.routing1.getType(), true);
     }
 
     @Bean(name = "secondQueue")
     public Queue secondQueue() {
-        return new Queue(RabbitQueueEnum.queue2.getType(), true);
+        return new Queue(RabbitRoutingKeyEnum.routing2.getType(), true);
     }
 
-    @Bean
-    public DirectExchange defaultExchange() {
-        return new DirectExchange(EXCHANGE);
+    @Bean(name = "firstExchange")
+    public DirectExchange firstExchange() {
+        return new DirectExchange(RabbitExchangeEnum.exchange1.getType());
+    }
+
+    @Bean(name = "secondExchange")
+    public DirectExchange secondExchange() {
+        return new DirectExchange(RabbitExchangeEnum.exchange2.getType());
     }
 
     @Bean(name = "firstbinding")
     public Binding firstbinding() {
-        return BindingBuilder.bind(firstQueue()).to(defaultExchange()).with(RabbitQueueEnum.queue1.getType());
+        return BindingBuilder.bind(firstQueue()).to(firstExchange()).with(RabbitRoutingKeyEnum.routing1.getType());
     }
 
     @Bean(name = "secondbinding")
     public Binding secondbinding() {
-        return BindingBuilder.bind(secondQueue()).to(defaultExchange()).with(RabbitQueueEnum.queue2.getType());
+        return BindingBuilder.bind(secondQueue()).to(secondExchange()).with(RabbitRoutingKeyEnum.routing2.getType());
     }
 
-    @Bean(name = "secondmessageContainer")
-    public SimpleMessageListenerContainer secondmessageContainer() {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(secondConnectionFactory());
-        container.setQueues(secondQueue());
-        container.setExposeListenerChannel(true);
-        container.setMaxConcurrentConsumers(1);
-        container.setConcurrentConsumers(1);
-        container.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认
-        container.setMessageListener(new ChannelAwareMessageListener() {
-
-            @Override
-            public void onMessage(Message message, Channel channel) throws Exception {
-                byte[] body = message.getBody();
-                System.out.println("secondmessageContainer : " + new String(body));
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消息成功消费
-            }
-        });
-        return container;
-    }
 }
