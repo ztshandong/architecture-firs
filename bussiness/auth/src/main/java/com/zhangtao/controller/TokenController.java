@@ -1,6 +1,7 @@
 package com.zhangtao.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.zhangtao.annotation.AuthToken;
 import com.zhangtao.domain.*;
 import com.zhangtao.domain.user.UserDetails;
 import com.zhangtao.encrypts.EncryHelper;
@@ -32,6 +33,7 @@ public class TokenController {
     @Autowired
     private MongoService<LogForMongo> logForMongoService;
 
+    @AuthToken
     @ResponseBody
     @RequestMapping(value = "/md5", method = RequestMethod.GET)
     public String EncoderByMd5(String str) throws Exception {
