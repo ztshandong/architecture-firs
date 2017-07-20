@@ -34,25 +34,32 @@ public abstract class RabbitMQSenderServiceImp implements RabbitMQSenderService,
 
     //UUID.randomUUID().toString()
     @Override
-    public void send1(String context, String CorrelationId) {
-        CorrelationData correlationId = new CorrelationData(CorrelationId);
-        firstRabbitTemplate.setConfirmCallback(this);
-        firstRabbitTemplate.setReturnCallback(this);
-        this.firstRabbitTemplate.convertAndSend(RabbitExchangeEnum.exchange1.getType(), RabbitRoutingKeyEnum.routing1.getType(), context, correlationId);
+    public void send1(String context, String CorrelationId) throws Exception {
+        try {
+            CorrelationData correlationId = new CorrelationData(CorrelationId);
+            firstRabbitTemplate.setConfirmCallback(this);
+            firstRabbitTemplate.setReturnCallback(this);
+            this.firstRabbitTemplate.convertAndSend(RabbitExchangeEnum.exchange1.getType(), RabbitRoutingKeyEnum.routing1.getType(), context, correlationId);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
-    public void send2(String context, String CorrelationId) {
-        CorrelationData correlationId = new CorrelationData(CorrelationId);
-        secondRabbitTemplate.setConfirmCallback(this);
-        secondRabbitTemplate.setReturnCallback(this);
-        this.secondRabbitTemplate.convertAndSend(RabbitExchangeEnum.exchange2.getType(), RabbitRoutingKeyEnum.routing2.getType(), context, correlationId);
+    public void send2(String context, String CorrelationId) throws Exception {
+        try {
+            CorrelationData correlationId = new CorrelationData(CorrelationId);
+            secondRabbitTemplate.setConfirmCallback(this);
+            secondRabbitTemplate.setReturnCallback(this);
+            this.secondRabbitTemplate.convertAndSend(RabbitExchangeEnum.exchange2.getType(), RabbitRoutingKeyEnum.routing2.getType(), context, correlationId);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         confirmEx(correlationData, ack, cause);
-
     }
 
     @Override

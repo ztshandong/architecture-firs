@@ -9,11 +9,11 @@ import org.springframework.amqp.rabbit.support.CorrelationData;
  */
 public interface RabbitMQSenderService {
 
-    void confirmEx(CorrelationData correlationData, boolean ack, String cause);
+    void confirmEx(CorrelationData correlationData, boolean ack, String cause) ;
 
     void returnedMessageEx(Message message, int replyCode, String replyText, String exchange, String routingKey);
 
-    void send1(String context, String CorrelationId);
+    void send1(String context, String CorrelationId)throws Exception;
 
-    void send2(String context, String CorrelationId);
+    void send2(String context, String CorrelationId)throws Exception;
 }
