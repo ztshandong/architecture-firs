@@ -1,6 +1,7 @@
 package com.zhangtao.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.zhangtao.annotation.AuthToken;
 import com.zhangtao.domain.user.UserDetails;
 import com.zhangtao.encrypts.EncryHelper;
 import com.zhangtao.service.RedisService;

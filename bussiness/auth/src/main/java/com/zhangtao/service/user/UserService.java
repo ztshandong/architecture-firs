@@ -1,5 +1,6 @@
 package com.zhangtao.service.user;
 
+import com.zhangtao.annotation.AuthToken;
 import com.zhangtao.annotation.UserDBReadDataSource;
 import com.zhangtao.dao.user.UserDetailsMapper;
 import com.zhangtao.domain.user.UserDetails;
@@ -16,6 +17,7 @@ public class UserService {
     private UserDetailsMapper userDetailsMapper;
 
     //    @Transactional
+
     @UserDBReadDataSource
     public UserDetails findById(Long id) {
         UserDetails u = this.userDetailsMapper.selectByPrimaryKey(id);
