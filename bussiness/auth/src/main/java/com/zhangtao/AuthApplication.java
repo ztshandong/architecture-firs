@@ -21,7 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @RefreshScope
 @EnableDiscoveryClient
 @ServletComponentScan
-@EnableScheduling
+//@EnableScheduling
 public class AuthApplication extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {

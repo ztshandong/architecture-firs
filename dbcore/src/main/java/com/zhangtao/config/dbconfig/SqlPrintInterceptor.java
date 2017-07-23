@@ -5,6 +5,7 @@ import com.zhangtao.domain.AopMongoLog;
 import com.zhangtao.service.MongoService;
 import com.zhangtao.service.MongoServiceImp;
 import com.zhangtao.service.RabbitMQSenderService;
+import com.zhangtao.service.RabbitMQSenderServiceImp;
 import org.apache.catalina.core.ApplicationContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,6 +20,8 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -44,6 +47,8 @@ public class SqlPrintInterceptor implements Interceptor {
     //    @Autowired
 //    MongoService<String> mongoService;
     private MongoService<AopMongoLog> mongoService = new MongoServiceImp<AopMongoLog>();
+
+    private RabbitMQSenderService rabbitMQSenderService = new RabbitMQSenderServiceImp();
 
     private static Log logger = LogFactory.getLog(SqlPrintInterceptor.class);
 
@@ -80,7 +85,7 @@ public class SqlPrintInterceptor implements Interceptor {
             aopMongoLog.setTs(timing);
             aopMongoLog.setRequestMethod(statementId);
             mongoService.mongo1save(aopMongoLog);
-
+            rabbitMQSenderService.send1(sql, UUID.randomUUID().toString());
             //        if(logger.isInfoEnabled()){
 //            logger.info("执行sql耗时:" + timing + " ms" + " - id:" + statementId + " - Sql:" );
 //            logger.info("   "+sql);

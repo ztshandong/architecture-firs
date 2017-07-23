@@ -36,13 +36,11 @@ public final class MongoServiceImp<T> implements MongoService<T> {
         this.mongoLog2 = mongoLog2;
     }
 
-    //    @Autowired
+    @Autowired
     @Resource(name = "mongoLog1Template")
-//    @Qualifier("mongoLog1Template")
     private MongoTemplate mongoLog1;
-    //    @Autowired
+    @Autowired
     @Resource(name = "mongoLog2Template")
-//    @Qualifier("mongoLog2Template")
     private MongoTemplate mongoLog2;
 
     @Override

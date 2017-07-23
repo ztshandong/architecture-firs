@@ -33,10 +33,7 @@ import java.util.UUID;
 @Component
 //@Order(LOWEST_PRECEDENCE)
 public class DataSourceAopInService implements PriorityOrdered {
-    @Autowired
-    private MongoService<AopMongoLog> logForMongoService;
-    @Autowired
-    private RabbitMQSenderService rabbitMQSenderService;
+
     private static Logger log = LoggerFactory.getLogger(DataSourceAopInService.class);
 
     /*
