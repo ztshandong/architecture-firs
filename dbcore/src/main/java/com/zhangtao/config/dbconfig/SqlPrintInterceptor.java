@@ -41,9 +41,9 @@ import java.util.regex.Matcher;
         })
 public class SqlPrintInterceptor implements Interceptor {
 
-//    @Autowired
+    //    @Autowired
 //    MongoService<String> mongoService;
-    MongoService<AopMongoLog> mongoService=new MongoServiceImp<AopMongoLog>();
+    private MongoService<AopMongoLog> mongoService = new MongoServiceImp<AopMongoLog>();
 
     private static Log logger = LogFactory.getLog(SqlPrintInterceptor.class);
 
@@ -71,14 +71,16 @@ public class SqlPrintInterceptor implements Interceptor {
 
             long end = System.currentTimeMillis();
             long timing = end - start;
-            String sql = "执行sql耗时:" + timing + " ms" + " - id:" + statementId + " - Sql:" + getSql(boundSql, parameterObject, configuration);
+            String sql = getSql(boundSql, parameterObject, configuration);
 //        String sql = "执行sql耗时:" + timing + " ms" + " - id:" + statementId + " - Sql:" + getSql(boundSql, parameterObject, configuration);
             logger.info("   " + sql);
             logger.info("mongoService:" + mongoService);
-            AopMongoLog aopMongoLog=new AopMongoLog();
+            AopMongoLog aopMongoLog = new AopMongoLog();
             aopMongoLog.setSql(sql);
-            if (mongoService != null)
-                mongoService.mongo1save(aopMongoLog);
+            aopMongoLog.setTs(timing);
+            aopMongoLog.setRequestMethod(statementId);
+            mongoService.mongo1save(aopMongoLog);
+
             //        if(logger.isInfoEnabled()){
 //            logger.info("执行sql耗时:" + timing + " ms" + " - id:" + statementId + " - Sql:" );
 //            logger.info("   "+sql);

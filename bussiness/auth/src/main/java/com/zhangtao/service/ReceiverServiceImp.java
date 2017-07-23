@@ -3,6 +3,7 @@ package com.zhangtao.service;
 import com.alibaba.fastjson.JSON;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**

@@ -11,4 +11,6 @@ import java.util.Objects;
 public interface MongoService<T> {
     void mongo1save(T object)throws Exception;
     void mongo2save(T object)throws Exception;
+    void mongo1save(T object,String collectionName)throws Exception;
+    void mongo2save(T object,String collectionName)throws Exception;
 }

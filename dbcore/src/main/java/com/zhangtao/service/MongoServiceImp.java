@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 @Service
 public final class MongoServiceImp<T> implements MongoService<T> {
-    public MongoTemplate getMongoLog1() {
+    private MongoTemplate getMongoLog1() {
         if (mongoLog1 == null)
             mongoLog1 = (MongoTemplate) SpringContextUtil.getBean("mongoLog1Template");
         return mongoLog1;
@@ -26,7 +26,7 @@ public final class MongoServiceImp<T> implements MongoService<T> {
         this.mongoLog1 = mongoLog1;
     }
 
-    public MongoTemplate getMongoLog2() {
+    private MongoTemplate getMongoLog2() {
         if (mongoLog2 == null)
             mongoLog2 = (MongoTemplate) SpringContextUtil.getBean("mongoLog2Template");
         return mongoLog2;
@@ -58,6 +58,24 @@ public final class MongoServiceImp<T> implements MongoService<T> {
     public void mongo2save(T object) throws Exception {
         try {
             getMongoLog2().save(object);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void mongo1save(T object, String collectionName) throws Exception {
+        try {
+            getMongoLog1().save(object, collectionName);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void mongo2save(T object, String collectionName) throws Exception {
+        try {
+            getMongoLog2().save(object, collectionName);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
