@@ -3,7 +3,7 @@ package com.zhangtao.domain;
 /**
  * Created by zhangtao on 2017/7/21.
  */
-public class AopMongoLog {
+public final class AopMongoLog {
 
     long ts;
     String token;
@@ -12,8 +12,18 @@ public class AopMongoLog {
     String requestUrl;
     String requestMethod;
     String controllerMethod;
-    ResCode  resCode;
+    ResCode resCode;
     PostBody postBody;
+    String sql;
+
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
+
 
     public long getTs() {
         return ts;

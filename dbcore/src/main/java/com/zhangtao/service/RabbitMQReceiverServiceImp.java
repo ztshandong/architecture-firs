@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by zhangtao on 2017/7/20.
  */
-@Component
+@Service
 public abstract class RabbitMQReceiverServiceImp implements RabbitMQReceiverService {
 
     @Autowired

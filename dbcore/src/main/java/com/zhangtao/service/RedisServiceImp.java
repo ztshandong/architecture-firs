@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
  * Created by zhangtao on 2017/7/16.
  */
 @Service
-public class RedisServiceImp<K, V> implements RedisService<K, V> {
-    private static Log logger;
+public final class RedisServiceImp<K, V> implements RedisService<K, V> {
+    private final static Log logger;
 
     static {
         logger = LogFactory.getLog(RedisServiceImp.class);

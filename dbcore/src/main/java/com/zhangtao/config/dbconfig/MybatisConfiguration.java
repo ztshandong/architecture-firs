@@ -108,7 +108,6 @@ public class MybatisConfiguration {
             //添加分页插件、打印sql插件
             Interceptor[] plugins = new Interceptor[]{pageHelper(),new SqlPrintInterceptor()};
             sessionFactoryBean.setPlugins(plugins);
-
             return sessionFactoryBean.getObject();
         } catch (IOException e) {
             log.error("mybatis resolver mapper*xml is error",e);

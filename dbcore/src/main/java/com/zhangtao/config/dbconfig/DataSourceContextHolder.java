@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author 张涛
  */
-public class DataSourceContextHolder {
+public final class DataSourceContextHolder {
 
     private static Logger log = LoggerFactory.getLogger(DataSourceContextHolder.class);
 

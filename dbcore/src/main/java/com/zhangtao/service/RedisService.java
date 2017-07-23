@@ -1,10 +1,13 @@
 package com.zhangtao.service;
 
+import org.springframework.stereotype.Component;
+
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zhangtao on 2017/7/16.
  */
+//@Component
 public interface RedisService<K, V> {
     boolean authhas(K key);
 

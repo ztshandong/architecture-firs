@@ -3,7 +3,7 @@ package com.zhangtao.common;
 /**
  * Created by 张涛 on 2017/7/3.
  */
-public class Hex {
+public final class Hex {
     /**
      * 用于建立十六进制字符的输出的小写字符数组
      */

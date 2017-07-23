@@ -4,6 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -21,6 +22,7 @@ import java.util.List;
  * Created by zhangtao on 2017/7/16.
  */
 @Configuration
+@EnableAutoConfiguration
 //@ConfigurationProperties(prefix = "mongodb.log2")
 public class MongoDBConfiguration {
 
@@ -48,7 +50,6 @@ public class MongoDBConfiguration {
         return new MongoTemplate(mongoLog1DbFactory(), getMongoConverter());
 //        return new MongoTemplate(mongoDbFactory(), null);
     }
-
     @Bean(name = "mongoLog2Template")
     public MongoTemplate mongoLog2Template() throws Exception {
         return new MongoTemplate(mongoLog2DbFactory(), getMongoConverter());

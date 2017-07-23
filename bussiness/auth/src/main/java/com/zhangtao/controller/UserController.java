@@ -65,6 +65,7 @@ public class UserController {
 //        return decrypt;
 //    }
 
+    @AuthToken
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     @ResponseBody
     //@RequestParam(value="name", required=true, defaultValue="0")

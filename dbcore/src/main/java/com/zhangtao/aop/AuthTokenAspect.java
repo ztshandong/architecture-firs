@@ -5,7 +5,9 @@ import com.zhangtao.domain.AopMongoLog;
 import com.zhangtao.domain.PostBody;
 import com.zhangtao.domain.ResCode;
 import com.zhangtao.service.MongoService;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -32,6 +34,23 @@ public class AuthTokenAspect {
     public void authToken() {
     }
 
+/*    @After("authToken()")
+    public void test(JoinPoint point) throws Throwable {
+        try {
+            AopMongoLog aopMongoLog = new AopMongoLog();
+            Object[] params = point.getArgs();// 获取参数
+            String methodName = point.getSignature().getName();// 获取方法名
+            Class<?> targetClass = point.getTarget().getClass();// 获取目标对象的类名
+            System.out.println(JSON.toJSONString(params));
+            System.out.println(JSON.toJSONString(methodName));
+            System.out.println(JSON.toJSONString(targetClass));
+
+            System.out.println("after");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }*/
+
     // 定义 advise，必须用Around，否则验证不通过只能靠抛异常
     @Around("authToken()")
     public Object checkAuth(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -46,7 +65,7 @@ public class AuthTokenAspect {
                     break;
                 }
             }
-
+            System.out.println("around");
             if (checkUserToken(aopMongoLog))
                 return joinPoint.proceed();
             else
@@ -91,7 +110,7 @@ public class AuthTokenAspect {
         return ip;
     }
 
-    private boolean checkUserToken(AopMongoLog aopMongoLog) {
+    private boolean checkUserToken(AopMongoLog aopMongoLog) throws Exception {
 //    private String checkUserToken(HttpServletRequest request) {
         aopMongoLog.setResCode(ResCode.success);
         logForMongoService.mongo1save(aopMongoLog);
