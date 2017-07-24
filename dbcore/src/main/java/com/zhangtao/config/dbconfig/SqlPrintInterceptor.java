@@ -46,7 +46,8 @@ public class SqlPrintInterceptor implements Interceptor {
 //    MongoService<String> mongoService;
     private MongoService<AopMongoLog> mongoService = new MongoServiceImp<AopMongoLog>();
 
-//    private static AopSqlSenderService aopSqlSenderService = new AopSqlSenderServiceImp();
+    private RabbitMQSender rabbitMQSender = new RabbitMQSenderImp();
+    //    private static AopSqlSenderService aopSqlSenderService = new AopSqlSenderServiceImp();
 //    private static AopSqlReceiverService aopSqlReceiverService = new AopSqlReceiverServiceImp();
     private static Log logger = LogFactory.getLog(SqlPrintInterceptor.class);
 
@@ -71,7 +72,6 @@ public class SqlPrintInterceptor implements Interceptor {
             BoundSql boundSql = mappedStatement.getBoundSql(parameterObject);
             Configuration configuration = mappedStatement.getConfiguration();
 
-
             long end = System.currentTimeMillis();
             long timing = end - start;
             String sql = getSql(boundSql, parameterObject, configuration);
@@ -82,7 +82,11 @@ public class SqlPrintInterceptor implements Interceptor {
             aopMongoLog.setSql(sql);
             aopMongoLog.setTs(timing);
             aopMongoLog.setRequestMethod(statementId);
-            mongoService.mongo1save(aopMongoLog);
+//            mongoService.mongo1save(aopMongoLog);
+            String s = JSON.toJSONString(aopMongoLog);
+            for (int i = 0; i < 5; i++) {
+                rabbitMQSender.sendAll(s, UUID.randomUUID().toString());
+            }
 //            aopSqlSenderService.send1(JSON.toJSONString(aopMongoLog), UUID.randomUUID().toString());
 //            aopSqlSenderService.send2(JSON.toJSONString(aopMongoLog), UUID.randomUUID().toString());
             //        if(logger.isInfoEnabled()){

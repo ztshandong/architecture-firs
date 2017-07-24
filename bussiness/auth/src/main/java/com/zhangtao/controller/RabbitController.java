@@ -1,7 +1,7 @@
 package com.zhangtao.controller;
 
-import com.zhangtao.service.RabbitMQSenderService;
-import com.zhangtao.service.SenderService;
+import com.zhangtao.service.RabbitMQSender;
+import com.zhangtao.service.RabbitMQSenderImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -22,21 +22,24 @@ import java.util.UUID;
 @RequestMapping("/rabbit")
 public class RabbitController {
     @Resource
-    SenderService senderService;
+//    @Autowired
+            RabbitMQSender senderService;
 
     //    @Autowired
 //    private Sender sender;
 //
     @ResponseBody
-    @RequestMapping(value = "/{str}", method = RequestMethod.GET)
-    public String test(@PathVariable("str") String str) throws Exception {
+    @RequestMapping(value = "/{str}/{num}", method = RequestMethod.GET)
+    public String test(@PathVariable("str") String str, @PathVariable("num") Integer num) throws Exception {
         try {
             String s1 = UUID.randomUUID().toString();
             String s2 = UUID.randomUUID().toString();
             System.out.println("s1:" + s1);
             System.out.println("s2:" + s2);
 //            senderService.send1("队列1：" + str, s1);
-            senderService.send2("队列2：" + str, s2);
+            for (int i = 0; i < num; i++) {
+                senderService.sendAll("队列2：" + str, s2);
+            }
             // 生成一个MD5加密计算摘要
             MessageDigest md = MessageDigest.getInstance("MD5");
             // 计算md5函数

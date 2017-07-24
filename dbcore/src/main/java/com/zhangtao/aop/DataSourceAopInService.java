@@ -1,24 +1,13 @@
 package com.zhangtao.aop;
 
-import com.alibaba.fastjson.JSON;
 import com.zhangtao.config.dbconfig.DataSourceContextHolder;
 import com.zhangtao.config.dbconfig.DataSourceType;
-import com.zhangtao.domain.AopMongoLog;
-import com.zhangtao.service.MongoService;
-import com.zhangtao.service.RabbitMQSenderService;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.UUID;
 
 /**
  * 在service层觉得数据源
