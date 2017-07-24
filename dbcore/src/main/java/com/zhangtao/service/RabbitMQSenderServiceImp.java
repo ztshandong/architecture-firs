@@ -1,6 +1,7 @@
 package com.zhangtao.service;
 
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import com.zhangtao.config.mqconfig.RabbitExchangeEnum;
 import com.zhangtao.config.mqconfig.RabbitRoutingKeyEnum;
 import com.zhangtao.util.SpringContextUtil;
@@ -26,7 +27,7 @@ import java.util.UUID;
  * Created by zhangtao on 2017/7/19.
  */
 @Service
-public class RabbitMQSenderServiceImp implements RabbitMQSenderService, RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
+public abstract class RabbitMQSenderServiceImp implements RabbitMQSenderService, RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
 
     private RabbitTemplate getFirstRabbitTemplate() {
         if (firstRabbitTemplate == null)
@@ -53,21 +54,22 @@ public class RabbitMQSenderServiceImp implements RabbitMQSenderService, RabbitTe
 
     @Resource(name = "secondRabbitTemplate")
     private RabbitTemplate secondRabbitTemplate;
-
-    @Override
-    public void confirmEx(CorrelationData correlationData, boolean ack, String cause) {
-        System.out.println("RabbitMQSenderServiceImpSenderConfirmEx");
-    }
-
-    @Override
-    public void returnedMessageEx(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-        System.out.println("RabbitMQSenderServiceImpSenderreturnedMessageEx");
-    }
+//
+//    @Override
+//    public void confirmEx(CorrelationData correlationData, boolean ack, String cause) {
+//        System.out.println("RabbitMQSenderServiceImpSenderConfirmEx");
+//    }
+//
+//    @Override
+//    public void returnedMessageEx(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+//        System.out.println("RabbitMQSenderServiceImpSenderreturnedMessageEx");
+//    }
 
     @Override
     public void send1(String context, String CorrelationId) throws Exception {
         try {
             CorrelationData correlationId = new CorrelationData(CorrelationId);
+            System.out.println("sender1:"+CorrelationId);
             getFirstRabbitTemplate().setConfirmCallback(this);
             getFirstRabbitTemplate().setReturnCallback(this);
             this.getFirstRabbitTemplate().convertAndSend(RabbitExchangeEnum.exchange1.getType(), RabbitRoutingKeyEnum.routing1.getType(), context, correlationId);
@@ -80,6 +82,7 @@ public class RabbitMQSenderServiceImp implements RabbitMQSenderService, RabbitTe
     public void send2(String context, String CorrelationId) throws Exception {
         try {
             CorrelationData correlationId = new CorrelationData(CorrelationId);
+            System.out.println("sender2:"+CorrelationId);
             getSecondRabbitTemplate().setConfirmCallback(this);
             getSecondRabbitTemplate().setReturnCallback(this);
             this.getSecondRabbitTemplate().convertAndSend(RabbitExchangeEnum.exchange2.getType(), RabbitRoutingKeyEnum.routing2.getType(), context, correlationId);

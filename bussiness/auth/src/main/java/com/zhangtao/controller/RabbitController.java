@@ -35,7 +35,7 @@ public class RabbitController {
             String s2 = UUID.randomUUID().toString();
             System.out.println("s1:" + s1);
             System.out.println("s2:" + s2);
-            senderService.send1("队列1：" + str, s1);
+//            senderService.send1("队列1：" + str, s1);
             senderService.send2("队列2：" + str, s2);
             // 生成一个MD5加密计算摘要
             MessageDigest md = MessageDigest.getInstance("MD5");

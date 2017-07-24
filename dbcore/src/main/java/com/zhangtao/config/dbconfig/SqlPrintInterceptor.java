@@ -1,11 +1,9 @@
 package com.zhangtao.config.dbconfig;
 
 import com.alibaba.fastjson.JSON;
+import com.rabbitmq.client.Channel;
 import com.zhangtao.domain.AopMongoLog;
-import com.zhangtao.service.MongoService;
-import com.zhangtao.service.MongoServiceImp;
-import com.zhangtao.service.RabbitMQSenderService;
-import com.zhangtao.service.RabbitMQSenderServiceImp;
+import com.zhangtao.service.*;
 import org.apache.catalina.core.ApplicationContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,8 +46,8 @@ public class SqlPrintInterceptor implements Interceptor {
 //    MongoService<String> mongoService;
     private MongoService<AopMongoLog> mongoService = new MongoServiceImp<AopMongoLog>();
 
-    private RabbitMQSenderService rabbitMQSenderService = new RabbitMQSenderServiceImp();
-
+//    private static AopSqlSenderService aopSqlSenderService = new AopSqlSenderServiceImp();
+//    private static AopSqlReceiverService aopSqlReceiverService = new AopSqlReceiverServiceImp();
     private static Log logger = LogFactory.getLog(SqlPrintInterceptor.class);
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -79,13 +77,14 @@ public class SqlPrintInterceptor implements Interceptor {
             String sql = getSql(boundSql, parameterObject, configuration);
 //        String sql = "执行sql耗时:" + timing + " ms" + " - id:" + statementId + " - Sql:" + getSql(boundSql, parameterObject, configuration);
             logger.info("   " + sql);
-            logger.info("mongoService:" + mongoService);
+//            logger.info("mongoService:" + mongoService);
             AopMongoLog aopMongoLog = new AopMongoLog();
             aopMongoLog.setSql(sql);
             aopMongoLog.setTs(timing);
             aopMongoLog.setRequestMethod(statementId);
             mongoService.mongo1save(aopMongoLog);
-            rabbitMQSenderService.send1(sql, UUID.randomUUID().toString());
+//            aopSqlSenderService.send1(JSON.toJSONString(aopMongoLog), UUID.randomUUID().toString());
+//            aopSqlSenderService.send2(JSON.toJSONString(aopMongoLog), UUID.randomUUID().toString());
             //        if(logger.isInfoEnabled()){
 //            logger.info("执行sql耗时:" + timing + " ms" + " - id:" + statementId + " - Sql:" );
 //            logger.info("   "+sql);

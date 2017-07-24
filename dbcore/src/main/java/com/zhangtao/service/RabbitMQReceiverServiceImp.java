@@ -86,8 +86,8 @@ public abstract class RabbitMQReceiverServiceImp implements RabbitMQReceiverServ
             SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(getFirstConnectionFactory());
             container.setQueues(getFirstQueue());
             container.setExposeListenerChannel(true);
-            container.setMaxConcurrentConsumers(1);
-            container.setConcurrentConsumers(1);
+//            container.setMaxConcurrentConsumers(1);
+//            container.setConcurrentConsumers(1);
             container.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认
             container.setMessageListener(new ChannelAwareMessageListener() {
 
@@ -111,8 +111,8 @@ public abstract class RabbitMQReceiverServiceImp implements RabbitMQReceiverServ
             SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(getSecondConnectionFactory());
             container.setQueues(getSecondQueue());
             container.setExposeListenerChannel(true);
-            container.setMaxConcurrentConsumers(1);
-            container.setConcurrentConsumers(1);
+//            container.setMaxConcurrentConsumers(1);
+//            container.setConcurrentConsumers(1);
             container.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认
             container.setMessageListener(new ChannelAwareMessageListener() {
 
@@ -129,4 +129,14 @@ public abstract class RabbitMQReceiverServiceImp implements RabbitMQReceiverServ
             return null;
         }
     }
+//
+//    @Override
+//    public boolean onMessageEx1(Message message, Channel channel) throws Exception {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onMessageEx2(Message message, Channel channel) throws Exception {
+//        return false;
+//    }
 }

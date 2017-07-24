@@ -60,7 +60,7 @@ public class RabbitConfiguration {
         connectionFactory.setPort(port);
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
-        connectionFactory.setPublisherConfirms(true);
+        connectionFactory.setPublisherConfirms(publisherconfirm);
         connectionFactory.setPublisherReturns(true);
         connectionFactory.setVirtualHost("/");
         return connectionFactory;
