@@ -1,10 +1,8 @@
 package com.zhangtao.config.dbconfig;
 
 import com.alibaba.fastjson.JSON;
-import com.rabbitmq.client.Channel;
 import com.zhangtao.domain.AopMongoLog;
 import com.zhangtao.service.*;
-import org.apache.catalina.core.ApplicationContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.executor.Executor;
@@ -18,13 +16,7 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandlerRegistry;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.support.CorrelationData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -46,7 +38,7 @@ public class SqlPrintInterceptor implements Interceptor {
 //    MongoService<String> mongoService;
     private MongoService<AopMongoLog> mongoService = new MongoServiceImp<AopMongoLog>();
 
-    private RabbitMQSender rabbitMQSender = new RabbitMQSenderImp();
+    private RabbitMQSenderService rabbitMQSenderService = new RabbitMQSenderServiceImp();
     //    private static AopSqlSenderService aopSqlSenderService = new AopSqlSenderServiceImp();
 //    private static AopSqlReceiverService aopSqlReceiverService = new AopSqlReceiverServiceImp();
     private static Log logger = LogFactory.getLog(SqlPrintInterceptor.class);
@@ -85,7 +77,7 @@ public class SqlPrintInterceptor implements Interceptor {
 //            mongoService.mongo1save(aopMongoLog);
             String s = JSON.toJSONString(aopMongoLog);
             for (int i = 0; i < 5; i++) {
-                rabbitMQSender.sendAll(s, UUID.randomUUID().toString());
+                rabbitMQSenderService.sendAll(s, UUID.randomUUID().toString());
             }
 //            aopSqlSenderService.send1(JSON.toJSONString(aopMongoLog), UUID.randomUUID().toString());
 //            aopSqlSenderService.send2(JSON.toJSONString(aopMongoLog), UUID.randomUUID().toString());

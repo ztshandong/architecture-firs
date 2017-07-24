@@ -3,5 +3,5 @@
 ///**
 // * Created by zhangtao on 2017/7/24.
 // */
-//public interface AopSqlSenderService extends RabbitMQSender {
+//public interface AopSqlSenderService extends RabbitMQSenderService {
 //}

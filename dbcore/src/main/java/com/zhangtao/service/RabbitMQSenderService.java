@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * Created by zhangtao on 2017/7/19.
  */
 //@Component
-public interface RabbitMQSender {
+public interface RabbitMQSenderService {
 
     void send1(String context, String CorrelationId)throws Exception;
 

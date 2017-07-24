@@ -1,7 +1,6 @@
 package com.zhangtao.controller;
 
-import com.zhangtao.service.RabbitMQSender;
-import com.zhangtao.service.RabbitMQSenderImp;
+import com.zhangtao.service.RabbitMQSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,7 @@ import java.util.UUID;
 public class RabbitController {
     @Resource
 //    @Autowired
-            RabbitMQSender senderService;
+            RabbitMQSenderService senderService;
 
     //    @Autowired
 //    private Sender sender;

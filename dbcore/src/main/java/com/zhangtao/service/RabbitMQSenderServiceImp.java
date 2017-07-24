@@ -1,14 +1,13 @@
 package com.zhangtao.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by zhangtao on 2017/7/24.
  */
 @Service
-public class RabbitMQSenderImp implements RabbitMQSender {
+public class RabbitMQSenderServiceImp implements RabbitMQSenderService {
 
     @Autowired
     private RabbitMQConfirm1 rabbitMQConfirmService1 =new RabbitMQConfirm1() ;
