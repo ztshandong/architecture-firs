@@ -14,44 +14,73 @@ import javax.annotation.Resource;
  * Created by zhangtao on 2017/7/19.
  */
 @Service
-public abstract class RabbitMQConfirmServiceImp1 implements RabbitMQConfirmService, RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
+public class RabbitMQConfirmServiceImp1 extends RabbitMQConfirmServiceImpBase implements RabbitMQConfirmService {
 
-    private RabbitTemplate getFirstRabbitTemplate() {
-        if (firstRabbitTemplate == null)
-            firstRabbitTemplate = (RabbitTemplate) SpringContextUtil.getBean("firstRabbitTemplate");
-        return firstRabbitTemplate;
-    }
-
-    public void setFirstRabbitTemplate(RabbitTemplate firstRabbitTemplate) {
-        this.firstRabbitTemplate = firstRabbitTemplate;
-    }
-
-    @Resource(name = "firstRabbitTemplate")
-    private RabbitTemplate firstRabbitTemplate;
-
-
-    @Override
-    public void send(String context, String CorrelationId) throws Exception {
-        try {
-            CorrelationData correlationId = new CorrelationData(CorrelationId);
-            System.out.println("sender1:"+CorrelationId);
-            getFirstRabbitTemplate().setConfirmCallback(this);
-            getFirstRabbitTemplate().setReturnCallback(this);
-            this.getFirstRabbitTemplate().convertAndSend(RabbitExchangeEnum.exchange1.getType(), RabbitRoutingKeyEnum.routing1.getType(), context, correlationId);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public void init() {
+        if (getRabbitTemplate() == null) {
+            super.initRabbitTemplate();
+            super.setRabbitTemplate((RabbitTemplate) SpringContextUtil.getBean("firstRabbitTemplate"));
+            super.setExchange(RabbitExchangeEnum.exchange1.getType());
+            super.setRountingkey(RabbitRoutingKeyEnum.routing1.getType());
         }
     }
 
     @Override
-    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-        confirmEx(correlationData, ack, cause);
+    public void confirmEx(CorrelationData correlationData, boolean ack, String cause) {
+        if (ack) {
+            System.out.println("sender1发送成功:" + correlationData);
+        } else {
+            System.out.println("消息发送失败:" + cause);
+        }
     }
 
     @Override
-    public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-        returnedMessageEx(message, replyCode, replyText, exchange, routingKey);
+    public void returnedMessageEx(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+        System.out.println("================");
+        System.out.println("sender1message = " + message);
+        System.out.println("replyCode = " + replyCode);
+        System.out.println("replyText = " + replyText);
+        System.out.println("exchange = " + exchange);
+        System.out.println("routingKey = " + routingKey);
+        System.out.println("================");
     }
+
+//    private RabbitTemplate getFirstRabbitTemplate() {
+//        if (firstRabbitTemplate == null)
+//            firstRabbitTemplate = (RabbitTemplate) SpringContextUtil.getBean("firstRabbitTemplate");
+//        return firstRabbitTemplate;
+//    }
+//
+//    public void setFirstRabbitTemplate(RabbitTemplate firstRabbitTemplate) {
+//        this.firstRabbitTemplate = firstRabbitTemplate;
+//    }
+//
+//    @Resource(name = "firstRabbitTemplate")
+//    private RabbitTemplate firstRabbitTemplate;
+//
+//
+//    @Override
+//    public void send(String context, String CorrelationId) throws Exception {
+//        try {
+//            CorrelationData correlationId = new CorrelationData(CorrelationId);
+//            System.out.println("sender1:"+CorrelationId);
+//            getFirstRabbitTemplate().setConfirmCallback(this);
+//            getFirstRabbitTemplate().setReturnCallback(this);
+//            this.getFirstRabbitTemplate().convertAndSend(RabbitExchangeEnum.exchange1.getType(), RabbitRoutingKeyEnum.routing1.getType(), context, correlationId);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+//
+//    @Override
+//    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+//        confirmEx(correlationData, ack, cause);
+//    }
+//
+//    @Override
+//    public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+//        returnedMessageEx(message, replyCode, replyText, exchange, routingKey);
+//    }
 
 
 }

@@ -13,6 +13,6 @@ public interface RabbitMQConfirmService {
 
     void returnedMessageEx(Message message, int replyCode, String replyText, String exchange, String routingKey);
 
-    void send(String context, String CorrelationId)throws Exception;
+//    void send(String context, String CorrelationId)throws Exception;
 
 }
