@@ -1,6 +1,7 @@
 package com.zhangtao.config.dbconfig;
 
 import com.alibaba.fastjson.JSON;
+import com.rabbitmq.client.Channel;
 import com.zhangtao.domain.AopMongoLog;
 import com.zhangtao.service.*;
 import org.apache.commons.logging.Log;
@@ -16,7 +17,10 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.springframework.amqp.core.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,17 +38,17 @@ import java.util.regex.Matcher;
         })
 public class SqlPrintInterceptor implements Interceptor {
 
-    //    @Autowired
-//    MongoService<String> mongoService;
-    private MongoService<AopMongoLog> mongoService = new MongoServiceImp<AopMongoLog>();
+    //    private MongoService<AopMongoLog> mongoService = new MongoServiceImp<AopMongoLog>();
+//    @Autowired
+//    @Resource(name = "rabbitMQSenderServiceImp1")
+    private RabbitMQSenderServiceImp1 rabbitMQSenderService1 = new RabbitMQSenderServiceImp1();
+//    @Autowired
+//    @Resource(name = "rabbitMQSenderServiceImp2")
+    private RabbitMQSenderServiceImp2 rabbitMQSenderService2 = new RabbitMQSenderServiceImp2();
 
-    private RabbitMQSenderService rabbitMQSenderService = new RabbitMQSenderServiceImp();
-    //    private static AopSqlSenderService aopSqlSenderService = new AopSqlSenderServiceImp();
-//    private static AopSqlReceiverService aopSqlReceiverService = new AopSqlReceiverServiceImp();
     private static Log logger = LogFactory.getLog(SqlPrintInterceptor.class);
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -76,9 +80,11 @@ public class SqlPrintInterceptor implements Interceptor {
             aopMongoLog.setRequestMethod(statementId);
 //            mongoService.mongo1save(aopMongoLog);
             String s = JSON.toJSONString(aopMongoLog);
-            for (int i = 0; i < 5; i++) {
-                rabbitMQSenderService.sendAll(s, UUID.randomUUID().toString());
-            }
+            System.out.println("发送消息");
+//            for (int i = 0; i < 5; i++) {
+            rabbitMQSenderService1.send(s, UUID.randomUUID().toString());
+            rabbitMQSenderService2.send(s, UUID.randomUUID().toString());
+//            }
 //            aopSqlSenderService.send1(JSON.toJSONString(aopMongoLog), UUID.randomUUID().toString());
 //            aopSqlSenderService.send2(JSON.toJSONString(aopMongoLog), UUID.randomUUID().toString());
             //        if(logger.isInfoEnabled()){

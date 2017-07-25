@@ -38,6 +38,8 @@
         <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" />
 
     </settings>
-
+    <typeHandlers>
+        <typeHandler javaType="com.zhangtao.domain.JSONAddr" handler="com.zhangtao.common.JsonTypeHandler"/>
+    </typeHandlers>
 </configuration>
 

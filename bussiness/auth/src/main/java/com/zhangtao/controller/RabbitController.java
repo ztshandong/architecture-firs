@@ -1,5 +1,7 @@
 package com.zhangtao.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.zhangtao.domain.AopMongoLog;
 import com.zhangtao.service.RabbitMQSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,9 +22,10 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/rabbit")
 public class RabbitController {
-    @Resource
-//    @Autowired
-            RabbitMQSenderService senderService;
+
+    @Autowired
+    @Resource(name = "rabbitMQSenderServiceImp1")
+    RabbitMQSenderService senderService2;
 
     //    @Autowired
 //    private Sender sender;
@@ -36,8 +39,11 @@ public class RabbitController {
             System.out.println("s1:" + s1);
             System.out.println("s2:" + s2);
 //            senderService.send1("队列1：" + str, s1);
+            AopMongoLog aopMongoLog = new AopMongoLog();
+            aopMongoLog.setSql(str);
             for (int i = 0; i < num; i++) {
-                senderService.sendAll("队列2：" + str, s2);
+//                senderService2.send(str, s2);
+                senderService2.send(JSON.toJSONString(aopMongoLog), s2);
             }
             // 生成一个MD5加密计算摘要
             MessageDigest md = MessageDigest.getInstance("MD5");

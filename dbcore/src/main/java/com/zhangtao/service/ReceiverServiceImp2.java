@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 /**
  * Created by zhangtao on 2017/7/24.
  */
-@Service
-public class AopSqlReceiverServiceImp extends RabbitMQReceiverServiceImp1 implements RabbitMQReceiverService {
+@Service("receiverServiceImp2")
+public class ReceiverServiceImp2 extends RabbitMQReceiverServiceImp2 implements RabbitMQReceiverService {
     @Autowired
     private MongoService<AopMongoLog> mongoService;
 
@@ -22,17 +22,19 @@ public class AopSqlReceiverServiceImp extends RabbitMQReceiverServiceImp1 implem
             String s2 = JSON.toJSONString(channel);
             byte[] body = message.getBody();
             String mongojson = new String(body);
-            AopMongoLog aopMongoLog = JSON.parseObject(mongojson, AopMongoLog.class);
-            mongoService.mongo1save(aopMongoLog);
-            System.out.println("Aop成功消费 : " + mongojson);
             System.out.println("message : " + s1);
             System.out.println("channel : " + s2);
+            System.out.println("mongojson : " + mongojson);
+
+            AopMongoLog aopMongoLog = JSON.parseObject(mongojson, AopMongoLog.class);
+            mongoService.mongo2save(aopMongoLog);
+            System.out.println("ReceiverServiceImp2成功消费 : " + mongojson);
+
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
     }
-
 }
 

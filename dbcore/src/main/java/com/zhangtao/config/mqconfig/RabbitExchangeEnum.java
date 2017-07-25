@@ -6,7 +6,8 @@ package com.zhangtao.config.mqconfig;
 public enum RabbitExchangeEnum {
 
     exchange1("exchange1", "第一个交换机"),
-    exchange2("exchange2", "第二个交换机");
+    exchange2("exchange2", "第二个交换机"),
+    exchange3("exchange3", "广播交换机");
 
     private String type;
 
