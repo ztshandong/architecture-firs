@@ -5,9 +5,10 @@ package com.zhangtao.config.mqconfig;
  */
 public enum RabbitRoutingKeyEnum {
 
-    routing1("routing1", "第一个路由"),
-    routing2("routing2", "第二个路由"),
-    routing3("routing3", "第二个路由");
+    ex1Routing1("ex1Routing1", "第一个交换机第一个路由"),
+    ex1Routing2("ex1Routing2", "第一个交换机第二个路由"),
+    ex2Routing1("ex2Routing1", "第二个交换机第一个路由"),
+    ex2Routing2("ex2Routing2", "第二个交换机第二个路由");
 
     private String type;
 

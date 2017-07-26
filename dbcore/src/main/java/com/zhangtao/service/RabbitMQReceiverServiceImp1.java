@@ -1,14 +1,14 @@
 package com.zhangtao.service;
 
+import com.alibaba.fastjson.JSON;
 import com.rabbitmq.client.Channel;
-import com.zhangtao.config.mqconfig.RabbitExchangeEnum;
+import com.zhangtao.domain.AopMongoLog;
+import com.zhangtao.util.RabbitMQUtil;
 import com.zhangtao.util.SpringContextUtil;
-import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
-import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  * Created by zhangtao on 2017/7/20.
  */
 @Service("rabbitMQReceiverServiceImp1")
-public abstract class RabbitMQReceiverServiceImp1 implements RabbitMQReceiverService {
+public final class RabbitMQReceiverServiceImp1 implements RabbitMQReceiverService {
 
     private ConnectionFactory getFirstConnectionFactory() {
         if (firstConnectionFactory == null)
@@ -29,37 +29,36 @@ public abstract class RabbitMQReceiverServiceImp1 implements RabbitMQReceiverSer
 
     private Queue getFirstQueue() {
         if (firstQueue == null)
-            firstQueue = (Queue) SpringContextUtil.getBean("firstQueue");
+            firstQueue = (Queue) SpringContextUtil.getBean("ex1Routing1Queue");
         return firstQueue;
     }
 
     @Autowired
     @Qualifier("firstConnectionFactory")
+
     private ConnectionFactory firstConnectionFactory;
 
     @Autowired
-    @Qualifier("firstQueue")
+    @Qualifier("ex1Routing1Queue")
     private Queue firstQueue;
 
-    @Bean(name = "firstmessageContainer")
+    @Bean(name = "firstmessageContainer1")
+//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public SimpleMessageListenerContainer firstmessageContainer() throws Exception {
         try {
-            SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(getFirstConnectionFactory());
-            container.setQueues(getFirstQueue());
-            container.setExposeListenerChannel(true);
-            container.setMaxConcurrentConsumers(1);
-            container.setConcurrentConsumers(1);
-            container.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认
+            SimpleMessageListenerContainer container = RabbitMQUtil.getSimpleMessageListenerContainer(getFirstConnectionFactory(), getFirstQueue());
             container.setMessageListener(new ChannelAwareMessageListener() {
 
                 @Override
                 public void onMessage(Message message, Channel channel) throws Exception {
-                    channel.basicQos(1);
+                    channel.basicQos(1, true);
+
                     if (onMessageEx(message, channel)) {
                         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消息成功消费
-                    }
-                    else {
-                        channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
+                    } else {
+//                        channel.basicRecover(true);
+                        channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+//                        channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
                     }
                 }
             });
@@ -67,6 +66,28 @@ public abstract class RabbitMQReceiverServiceImp1 implements RabbitMQReceiverSer
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    @Autowired
+    private MongoService<AopMongoLog> mongoService;
+
+    @Override
+    public boolean onMessageEx(Message message, Channel channel) throws Exception {
+        try {
+            byte[] body = message.getBody();
+            String mongojson = new String(body);
+            String s1 = JSON.toJSONString(message);
+            String s2 = JSON.toJSONString(channel);
+            AopMongoLog aopMongoLog = JSON.parseObject(mongojson, AopMongoLog.class);
+            mongoService.mongo2save(aopMongoLog);
+            System.out.println("rabbitMQReceiverServiceImp1成功消费 : " + mongojson);
+            System.out.println("message : " + s1);
+            System.out.println("channel : " + s2);
+            return true;
+        } catch (Exception ex) {
+//            ex.printStackTrace();
+            return false;
         }
     }
 

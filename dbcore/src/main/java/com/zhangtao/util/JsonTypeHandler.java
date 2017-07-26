@@ -1,4 +1,4 @@
-package com.zhangtao.common;
+package com.zhangtao.util;
 
 /**
  * Created by 张涛 on 2017/7/24.
@@ -35,7 +35,7 @@ import java.sql.SQLException;
  * @date 2016/5/31 19:33
  */
 //@MappedJdbcTypes(value = {JdbcType.VARCHAR}, includeNullJdbcType = true)
-public class JsonTypeHandler<T extends Object> extends BaseTypeHandler<T> {
+public final class JsonTypeHandler<T extends Object> extends BaseTypeHandler<T> {
     private static final ObjectMapper mapper = new ObjectMapper();
     private Class<T> clazz;
 

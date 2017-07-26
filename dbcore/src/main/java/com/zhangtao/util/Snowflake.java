@@ -1,4 +1,4 @@
-package com.zhangtao.common;
+package com.zhangtao.util;
 
 
 import java.net.InetAddress;

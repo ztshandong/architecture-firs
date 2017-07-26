@@ -39,7 +39,7 @@
 
     </settings>
     <typeHandlers>
-        <typeHandler javaType="com.zhangtao.domain.JSONAddr" handler="com.zhangtao.common.JsonTypeHandler"/>
+        <typeHandler javaType="com.zhangtao.domain.JSONAddr" handler="com.zhangtao.util.JsonTypeHandler"/>
     </typeHandlers>
 </configuration>
 

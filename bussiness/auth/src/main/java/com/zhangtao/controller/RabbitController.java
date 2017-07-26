@@ -25,8 +25,14 @@ public class RabbitController {
 
     @Autowired
     @Resource(name = "rabbitMQSenderServiceImp1")
-    RabbitMQSenderService senderService2;
+    RabbitMQSenderService senderService1;
 
+    @Autowired
+    @Resource(name = "rabbitMQSenderServiceImp2")
+    RabbitMQSenderService senderService2;
+    @Autowired
+    @Resource(name = "rabbitMQSenderServiceImp3")
+    RabbitMQSenderService senderService3;
     //    @Autowired
 //    private Sender sender;
 //
@@ -43,7 +49,12 @@ public class RabbitController {
             aopMongoLog.setSql(str);
             for (int i = 0; i < num; i++) {
 //                senderService2.send(str, s2);
-                senderService2.send(JSON.toJSONString(aopMongoLog), s2);
+//                System.out.println("senderService1================");
+//                senderService1.send(JSON.toJSONString(aopMongoLog), s2);
+//                System.out.println("senderService2================");
+//                senderService2.send(JSON.toJSONString(aopMongoLog), s2);
+                System.out.println("senderService================");
+                senderService1.send(JSON.toJSONString(aopMongoLog), s2);
             }
             // 生成一个MD5加密计算摘要
             MessageDigest md = MessageDigest.getInstance("MD5");

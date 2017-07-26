@@ -14,8 +14,8 @@ import javax.annotation.Resource;
 /**
  * Created by zhangtao on 2017/7/19.
  */
-@Service("rabbitMQSenderServiceImp1")
-public class RabbitMQSenderServiceImp1 implements RabbitMQSenderService, RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
+@Service("rabbitMQSenderServiceImp3")
+public class RabbitMQSenderServiceImp3 implements RabbitMQSenderService, RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
 
     private RabbitTemplate getFirstRabbitTemplate() {
         if (firstRabbitTemplate == null)
@@ -35,10 +35,10 @@ public class RabbitMQSenderServiceImp1 implements RabbitMQSenderService, RabbitT
     public void send(String context, String CorrelationId) throws Exception {
         try {
             CorrelationData correlationId = new CorrelationData(CorrelationId);
-            System.out.println("rabbitMQSenderServiceImp1:" + CorrelationId);
+            System.out.println("rabbitMQSenderServiceImp3:" + CorrelationId);
             getFirstRabbitTemplate().setConfirmCallback(this);
             getFirstRabbitTemplate().setReturnCallback(this);
-            this.getFirstRabbitTemplate().convertAndSend(RabbitExchangeEnum.exchange1.getType(), RabbitRoutingKeyEnum.ex1Routing1.getType(), context, correlationId);
+            this.getFirstRabbitTemplate().convertAndSend(RabbitExchangeEnum.exchange3.getType(), "", context, correlationId);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class RabbitMQSenderServiceImp1 implements RabbitMQSenderService, RabbitT
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         if (ack) {
-            System.out.println("rabbitMQSenderServiceImp1发送成功:" + correlationData);
+            System.out.println("rabbitMQSenderServiceImp3发送成功:" + correlationData);
         } else {
             System.out.println("消息发送失败:" + cause);
         }
@@ -56,7 +56,7 @@ public class RabbitMQSenderServiceImp1 implements RabbitMQSenderService, RabbitT
     @Override
     public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
         System.out.println("================");
-        System.out.println("rabbitMQSenderServiceImp1message = " + message);
+        System.out.println("rabbitMQSenderServiceImp3message = " + message);
         System.out.println("replyCode = " + replyCode);
         System.out.println("replyText = " + replyText);
         System.out.println("exchange = " + exchange);

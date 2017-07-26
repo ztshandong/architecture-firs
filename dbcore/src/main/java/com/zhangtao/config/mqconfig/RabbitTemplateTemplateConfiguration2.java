@@ -4,10 +4,7 @@ package com.zhangtao.config.mqconfig;
  * Created by zhangtao on 2017/7/18.
  */
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import com.zhangtao.util.RabbitMQUtil;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -17,11 +14,10 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
-public class RabbitConfiguration2 extends RabbitConfigurationBase {
+public class RabbitTemplateTemplateConfiguration2 {
 
     @Value("${rabbitmq.second.host}")
     String host2;
@@ -38,7 +34,7 @@ public class RabbitConfiguration2 extends RabbitConfigurationBase {
 
     @Bean(name = "secondConnectionFactory")
     public ConnectionFactory secondConnectionFactory() {
-        return iniCachingConnectionFactory(host2, port2, username2, password2, publisherconfirm2, publisherreturns2);
+        return RabbitMQUtil.getCachingConnectionFactory(host2, port2, username2, password2, publisherconfirm2, publisherreturns2);
     }
 
     @Bean(name = "secondRabbitTemplate")
@@ -61,19 +57,5 @@ public class RabbitConfiguration2 extends RabbitConfigurationBase {
         return factory;
     }
 
-    @Bean(name = "secondQueue")
-    public Queue secondQueue() {
-        return new Queue(RabbitRoutingKeyEnum.routing2.getType(), true);
-    }
-
-    @Bean(name = "secondExchange")
-    public DirectExchange secondExchange() {
-        return new DirectExchange(RabbitExchangeEnum.exchange2.getType());
-    }
-
-    @Bean(name = "secondbinding")
-    public Binding secondbinding() {
-        return BindingBuilder.bind(secondQueue()).to(secondExchange()).with(RabbitRoutingKeyEnum.routing2.getType());
-    }
 
 }

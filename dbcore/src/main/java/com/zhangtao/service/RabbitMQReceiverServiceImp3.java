@@ -5,6 +5,7 @@ import com.rabbitmq.client.Channel;
 import com.zhangtao.domain.AopMongoLog;
 import com.zhangtao.util.RabbitMQUtil;
 import com.zhangtao.util.SpringContextUtil;
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -18,43 +19,47 @@ import org.springframework.stereotype.Service;
 /**
  * Created by zhangtao on 2017/7/20.
  */
-@Service("rabbitMQReceiverServiceImp2")
-public final class RabbitMQReceiverServiceImp2 implements RabbitMQReceiverService {
+@Service("rabbitMQReceiverServiceImp3")
+public final class RabbitMQReceiverServiceImp3 implements RabbitMQReceiverService {
 
-    private ConnectionFactory getSecondConnectionFactory() {
-        if (secondConnectionFactory == null)
-            secondConnectionFactory = (ConnectionFactory) SpringContextUtil.getBean("secondConnectionFactory");
-        return secondConnectionFactory;
+    private ConnectionFactory getFirstConnectionFactory() {
+        if (firstConnectionFactory == null)
+            firstConnectionFactory = (ConnectionFactory) SpringContextUtil.getBean("firstConnectionFactory");
+        return firstConnectionFactory;
     }
 
-    private Queue getSecondQueue() {
-        if (secondQueue == null)
-            secondQueue = (Queue) SpringContextUtil.getBean("ex2Routing2Queue");
-        return secondQueue;
+    private Queue getFirstQueue() {
+        if (firstQueue == null)
+            firstQueue = (Queue) SpringContextUtil.getBean("ex1Routing2Queue");
+        return firstQueue;
     }
 
     @Autowired
-    @Qualifier("secondConnectionFactory")
-    private ConnectionFactory secondConnectionFactory;
+    @Qualifier("firstConnectionFactory")
+    private ConnectionFactory firstConnectionFactory;
 
     @Autowired
-    @Qualifier("ex2Routing2Queue")
-    private Queue secondQueue;
+    @Qualifier("ex1Routing2Queue")
+    private Queue firstQueue;
 
-    @Bean(name = "secondmessageContainer2")
+    @Bean(name = "firstmessageContainer3")
 //    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public SimpleMessageListenerContainer secondmessageContainer() throws Exception {
+    public SimpleMessageListenerContainer firstmessageContainer() throws Exception {
         try {
-            SimpleMessageListenerContainer container = RabbitMQUtil.getSimpleMessageListenerContainer(getSecondConnectionFactory(), getSecondQueue());
+            SimpleMessageListenerContainer container = RabbitMQUtil.getSimpleMessageListenerContainer(getFirstConnectionFactory(), getFirstQueue());
+            container.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认
             container.setMessageListener(new ChannelAwareMessageListener() {
 
                 @Override
                 public void onMessage(Message message, Channel channel) throws Exception {
-                    channel.basicQos(1);
+                    channel.basicQos(1, true);
+
                     if (onMessageEx(message, channel)) {
                         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消息成功消费
                     } else {
-                        channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
+//                        channel.basicRecover(true);
+                        channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+//                        channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,false);
                     }
                 }
             });
@@ -77,7 +82,7 @@ public final class RabbitMQReceiverServiceImp2 implements RabbitMQReceiverServic
             String s2 = JSON.toJSONString(channel);
             AopMongoLog aopMongoLog = JSON.parseObject(mongojson, AopMongoLog.class);
             mongoService.mongo2save(aopMongoLog);
-            System.out.println("rabbitMQReceiverServiceImp2成功消费 : " + mongojson);
+            System.out.println("rabbitMQReceiverServiceImp3成功消费 : " + mongojson);
             System.out.println("message : " + s1);
             System.out.println("channel : " + s2);
             return true;
@@ -87,9 +92,4 @@ public final class RabbitMQReceiverServiceImp2 implements RabbitMQReceiverServic
         }
     }
 
-//
-//    @Override
-//    public boolean onMessageEx(Message message, Channel channel) throws Exception {
-//        return false;
-//    }
 }

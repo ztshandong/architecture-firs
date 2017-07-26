@@ -4,7 +4,7 @@ package com.zhangtao.config.mqconfig;
  * Created by zhangtao on 2017/7/18.
  */
 
-import org.springframework.amqp.core.*;
+import com.zhangtao.util.RabbitMQUtil;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
-public class RabbitConfiguration1 extends RabbitConfigurationBase {
+public class RabbitTemplateTemplateConfiguration1 {
 
     @Value("${rabbitmq.first.host}")
     String host1;
@@ -36,7 +36,7 @@ public class RabbitConfiguration1 extends RabbitConfigurationBase {
     @Bean(name = "firstConnectionFactory")
     @Primary
     public ConnectionFactory firstConnectionFactory() {
-        return iniCachingConnectionFactory(host1, port1, username1, password1, publisherconfirm1, publisherreturns1);
+        return RabbitMQUtil.getCachingConnectionFactory(host1, port1, username1, password1, publisherconfirm1, publisherreturns1);
     }
 
     @Bean(name = "firstRabbitTemplate")
@@ -60,24 +60,5 @@ public class RabbitConfiguration1 extends RabbitConfigurationBase {
         return factory;
     }
 
-    @Bean(name = "firstQueue")
-    public Queue firstQueue() {
-        return new Queue(RabbitRoutingKeyEnum.routing1.getType(), true);
-    }
-
-    @Bean(name = "firstExchange")
-//    public DirectExchange firstExchange() {
-//        return new DirectExchange(RabbitExchangeEnum.exchange1.getType());
-//    }
-    public FanoutExchange firstExchange() {
-        return new FanoutExchange(RabbitExchangeEnum.exchange3.getType());
-    }
-
-    @Bean(name = "firstbinding")
-    public Binding firstbinding() {
-        return BindingBuilder.bind(firstQueue()).to(firstExchange());
-//        return BindingBuilder.bind(firstQueue()).to(firstExchange()).with(RabbitRoutingKeyEnum.routing1.getType());
-
-    }
 
 }

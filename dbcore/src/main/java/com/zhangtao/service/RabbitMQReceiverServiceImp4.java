@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 /**
  * Created by zhangtao on 2017/7/20.
  */
-@Service("rabbitMQReceiverServiceImp2")
-public final class RabbitMQReceiverServiceImp2 implements RabbitMQReceiverService {
+@Service("rabbitMQReceiverServiceImp4")
+public final class RabbitMQReceiverServiceImp4 implements RabbitMQReceiverService {
 
     private ConnectionFactory getSecondConnectionFactory() {
         if (secondConnectionFactory == null)
@@ -41,7 +41,7 @@ public final class RabbitMQReceiverServiceImp2 implements RabbitMQReceiverServic
     @Qualifier("ex2Routing2Queue")
     private Queue secondQueue;
 
-    @Bean(name = "secondmessageContainer2")
+    @Bean(name = "secondmessageContainer4")
 //    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public SimpleMessageListenerContainer secondmessageContainer() throws Exception {
         try {
@@ -77,7 +77,7 @@ public final class RabbitMQReceiverServiceImp2 implements RabbitMQReceiverServic
             String s2 = JSON.toJSONString(channel);
             AopMongoLog aopMongoLog = JSON.parseObject(mongojson, AopMongoLog.class);
             mongoService.mongo2save(aopMongoLog);
-            System.out.println("rabbitMQReceiverServiceImp2成功消费 : " + mongojson);
+            System.out.println("rabbitMQReceiverServiceImp4成功消费 : " + mongojson);
             System.out.println("message : " + s1);
             System.out.println("channel : " + s2);
             return true;

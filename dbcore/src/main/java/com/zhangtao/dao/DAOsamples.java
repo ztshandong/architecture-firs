@@ -1,6 +1,6 @@
 /*package com.zhangtao.dao;
 
-import com.zhangtao.common.Snowflake;
+import com.zhangtao.util.Snowflake;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

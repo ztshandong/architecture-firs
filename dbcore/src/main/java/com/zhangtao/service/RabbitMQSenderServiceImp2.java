@@ -38,7 +38,7 @@ public class RabbitMQSenderServiceImp2 implements RabbitMQSenderService, RabbitT
             System.out.println("sender2:" + CorrelationId);
             getSecondRabbitTemplate().setConfirmCallback(this);
             getSecondRabbitTemplate().setReturnCallback(this);
-            this.getSecondRabbitTemplate().convertAndSend(RabbitExchangeEnum.exchange2.getType(), RabbitRoutingKeyEnum.routing2.getType(), context, correlationId);
+            this.getSecondRabbitTemplate().convertAndSend(RabbitExchangeEnum.exchange2.getType(), RabbitRoutingKeyEnum.ex2Routing2.getType(), context, correlationId);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
