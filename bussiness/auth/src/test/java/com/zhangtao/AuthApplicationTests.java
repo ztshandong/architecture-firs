@@ -1,7 +1,7 @@
 package com.zhangtao;
 
 import com.zhangtao.common.Hex;
-import com.zhangtao.common.Snowflake;
+import com.zhangtao.util.Snowflake;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,7 @@ public class AuthApplicationTests {
 	public void contextLoads() {
 		String pwd = "$2a$10$op1pgA2cZTkUiji4aL37OeCaAI1ol8cn.PmjqqPMI5jd0it8IOZmm";
 
-		long b=Snowflake.nextId();
+		long b= Snowflake.nextId();
 		int k = Math.abs((int) b >> 32) % 108;
 		if (k == 0) {
 			k = k + 18;
