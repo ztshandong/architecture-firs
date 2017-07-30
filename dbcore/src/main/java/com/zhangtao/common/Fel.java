@@ -53,10 +53,13 @@ public final class Fel {
             eval = exp.eval(ctx);
             evalstr = eval.toString();
             i = evalstr.indexOf(".");
-            if (i > 0) {
-                evalstr = evalstr.substring(0, i);
+//            if (i > 0) {
+//                evalstr = evalstr.substring(0, i);
+//            }
+            if (i < 0) {
+//                evalstr = evalstr.substring(0, i);
+                allresult.put(entry.getKey().toString(), Integer.parseInt(evalstr));
             }
-            allresult.put(entry.getKey().toString(), Integer.parseInt(evalstr));
             if (Objects.equals(eval, resultnum)) {
                 currectResult.put(entry.getKey().toString(), resultnum);
             }
