@@ -58,6 +58,7 @@ public final class Hex {
             out[j++] = toDigits[(0xF0 & data[i]) >>> 4];
             out[j++] = toDigits[0x0F & data[i]];
         }
+
         return out;
     }
 

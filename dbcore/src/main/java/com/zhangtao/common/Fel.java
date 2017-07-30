@@ -11,12 +11,19 @@ import java.util.*;
  * Created by zhangtao on 2017/7/30.
  */
 public final class Fel {
-    static Hashtable<String, Integer> allmap = new Hashtable<>();
-    static List<String> optExpression = new ArrayList<>();
-    static Hashtable<String, Integer> allresult = new Hashtable<>();
-    static Hashtable<String, Integer> currectResult = new Hashtable<>();
+    private static Hashtable<String, Integer> allmap = new Hashtable<>();
+    private static List<String> optExpression = new ArrayList<>();
+    private static Hashtable<String, Integer> allresult = new Hashtable<>();
 
-    public static Hashtable<String, Integer> GetResult(int resultnum) {
+    public static Fel getSingleton() {
+        return Holder.singleton;
+    }
+
+    private static class Holder {
+        private static Fel singleton = new Fel();
+    }
+
+    private Fel() {
         allmap.put("1", 1);
         optExpression.add("1");
         for (Integer integer = 2; integer <= 10; integer++) {
@@ -60,7 +67,18 @@ public final class Fel {
 //                evalstr = evalstr.substring(0, i);
                 allresult.put(entry.getKey().toString(), Integer.parseInt(evalstr));
             }
-            if (Objects.equals(eval, resultnum)) {
+
+        }
+    }
+
+
+    public Hashtable<String, Integer> GetResult(int resultnum) {
+
+        Hashtable<String, Integer> currectResult = new Hashtable<>();
+
+        for (Map.Entry entry : allresult.entrySet()) {
+
+            if (Objects.equals(entry.getValue(), resultnum)) {
                 currectResult.put(entry.getKey().toString(), resultnum);
             }
         }
