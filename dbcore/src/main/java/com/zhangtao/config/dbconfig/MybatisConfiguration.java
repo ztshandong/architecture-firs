@@ -56,6 +56,12 @@ public class MybatisConfiguration {
     @Qualifier("userDBReadDataSource")
     private DataSource userDBReadDataSource;
     @Autowired
+    @Qualifier("aliuserDBWriteDataSource")
+    private DataSource aliuserDBWriteDataSource;
+    @Autowired
+    @Qualifier("aliuserDBReadDataSource")
+    private DataSource aliuserDBReadDataSource;
+    @Autowired
     @Qualifier("goodsDBWriteDataSource")
     private DataSource goodsDBWriteDataSource;
     @Autowired
@@ -148,6 +154,8 @@ public class MybatisConfiguration {
 //        targetDataSources.put(DataSourceType.userDBread.getType()+"1", readDataSource01);
 //        targetDataSources.put(DataSourceType.userDBread.getType()+"2", readDataSource02);
         targetDataSources.put(DataSourceType.userDBread.getType(), userDBReadDataSource);
+        targetDataSources.put(DataSourceType.aliuserDBwrite.getType(), aliuserDBWriteDataSource);
+        targetDataSources.put(DataSourceType.aliuserDBread.getType(), aliuserDBReadDataSource);
 
         targetDataSources.put(DataSourceType.goodsDBwrite.getType(), goodsDBWriteDataSource);
         targetDataSources.put(DataSourceType.goodsDBread.getType(), goodsDBReadDataSource);

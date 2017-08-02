@@ -18,10 +18,10 @@ import java.util.UUID;
 public final class Snowflake {
     private static final long workerId;//每台机器分配不同的id
     private static final long epoch = 1472693086614L;   // 时间起始标记点，作为基准，一般取系统的最近时间
-    private static final long workerIdBits = 10L;      // 机器标识位数
+    private static final long workerIdBits = 8L;      // 机器标识位数
     private static final long maxWorkerId = -1L ^ -1L << workerIdBits;// 机器ID最大值: 1023
     private static long sequence = 0L;                   // 0，并发控制
-    private static final long sequenceBits = 12L;      //毫秒内自增位
+    private static final long sequenceBits = 14L;      //毫秒内自增位
 
     private static final long workerIdShift = sequenceBits;                             // 12
     private static final long timestampLeftShift = sequenceBits + workerIdBits;// 22

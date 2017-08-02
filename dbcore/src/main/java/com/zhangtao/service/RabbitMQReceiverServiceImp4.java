@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.rabbitmq.client.Channel;
 import com.zhangtao.domain.AopMongoLog;
 import com.zhangtao.util.RabbitMQUtil;
+import com.zhangtao.util.Snowflake;
 import com.zhangtao.util.SpringContextUtil;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
@@ -76,6 +77,7 @@ public final class RabbitMQReceiverServiceImp4 implements RabbitMQReceiverServic
             String s1 = JSON.toJSONString(message);
             String s2 = JSON.toJSONString(channel);
             AopMongoLog aopMongoLog = JSON.parseObject(mongojson, AopMongoLog.class);
+            aopMongoLog.setId(String.valueOf(Snowflake.nextId()));
             mongoService.mongo2save(aopMongoLog);
             System.out.println("rabbitMQReceiverServiceImp4成功消费 : " + mongojson);
             System.out.println("message : " + s1);

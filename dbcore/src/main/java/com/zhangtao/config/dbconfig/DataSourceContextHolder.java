@@ -40,6 +40,22 @@ public final class DataSourceContextHolder {
     /**
      * 读库
      */
+    public static void setaliUserDBRead() {
+        local.set(DataSourceType.aliuserDBread.getType());
+        log.info(DB_CHANGE_INFO + DataSourceType.aliuserDBread.getName());
+    }
+
+    /**
+     * 写库
+     */
+    public static void setaliUserDBWrite() {
+        local.set(DataSourceType.aliuserDBwrite.getType());
+        log.info(DB_CHANGE_INFO + DataSourceType.aliuserDBwrite.getName());
+    }
+
+    /**
+     * 读库
+     */
     public static void setGoodsDBRead() {
         local.set(DataSourceType.goodsDBread.getType());
         log.info(DB_CHANGE_INFO + DataSourceType.goodsDBread.getName());

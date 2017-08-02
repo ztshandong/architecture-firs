@@ -1,8 +1,11 @@
 package com.zhangtao.domain.user;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 
 public class UserDetails {
+
     private Long dId;
 
     private Long dMid;

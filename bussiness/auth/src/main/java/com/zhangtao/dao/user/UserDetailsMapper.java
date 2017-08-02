@@ -7,9 +7,10 @@ import com.zhangtao.domain.user.UserDetailsExample;
 import org.apache.ibatis.annotations.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 @Mapper
-@Component
+@Repository
 public interface UserDetailsMapper {
     @Select({
             "select",

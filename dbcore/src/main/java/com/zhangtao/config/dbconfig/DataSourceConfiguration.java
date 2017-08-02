@@ -47,6 +47,20 @@ public class DataSourceConfiguration {
         return initDataSource();
     }
 
+    @Bean(name = "aliuserDBWriteDataSource")
+    @ConfigurationProperties(prefix = "mysql.datasource.aliuserdbwrite")
+    public DataSource aliuserDBWriteDataSource() {
+        log.info("-------------------- aliuserDBWriteDataSource init ---------------------");
+        return initDataSource();
+    }
+
+    @Bean(name = "aliuserDBReadDataSource")
+    @ConfigurationProperties(prefix = "mysql.datasource.aliuserdbread")
+    public DataSource aliuserDBReadDataSource() {
+        log.info("-------------------- aliuserDBReadDataSource init ---------------------");
+        return initDataSource();
+    }
+
     @Bean(name = "goodsDBWriteDataSource")
     @ConfigurationProperties(prefix = "mysql.datasource.goodsdbwrite")
     public DataSource goodsDBWriteDataSource() {
@@ -101,6 +115,9 @@ public class DataSourceConfiguration {
         log.info("-------------------- queueDBReadDataSource init ---------------------");
         return initDataSource();
     }
+
+
+
 //    @Bean(name = "readDataSource01")
 //    @ConfigurationProperties(prefix = "mysql.userdbdatasource.read01")
 //    public DataSource readDataSourceOne() {

@@ -4,6 +4,8 @@ public enum DataSourceType {
 
     userDBread("userDBread", "用户库读库"),
     userDBwrite("userDBwrite", "用户库写库"),
+    aliuserDBread("aliuserDBread", "阿里用户库读库"),
+    aliuserDBwrite("aliuserDBwrite", "阿里用户库写库"),
     goodsDBread("goodsDBread", "货源库读库"),
     goodsDBwrite("goodsDBwrite", "货源库写库"),
     quotesDBread("quotesDBread", "报价库读库"),

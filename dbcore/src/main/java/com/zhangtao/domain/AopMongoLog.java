@@ -1,10 +1,23 @@
 package com.zhangtao.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Created by zhangtao on 2017/7/21.
  */
+@Document
 public final class AopMongoLog {
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Id
+    String id;
     long ts;
     String token;
     String sign;

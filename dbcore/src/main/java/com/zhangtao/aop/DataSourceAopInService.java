@@ -88,6 +88,21 @@ public class DataSourceAopInService implements PriorityOrdered {
     }
 
     @Before("execution(* com.zhangtao.service..*.*(..)) "
+            + " && @annotation(com.zhangtao.annotation.AliUserDBWriteDataSource) ")
+    public void setaliUserDBWriteDataSourceType() {
+        DataSourceContextHolder.setaliUserDBWrite();
+    }
+
+    @Before("execution(* com.zhangtao.service..*.*(..)) "
+            + " && @annotation(com.zhangtao.annotation.AliUserDBReadDataSource) ")
+    public void setaliUserDBReadDataSourceType() {
+        //如果已经开启写事务了，那之后的所有读都从写库读
+        if (!DataSourceType.aliuserDBwrite.getType().equals(DataSourceContextHolder.getReadOrWrite())) {
+            DataSourceContextHolder.setaliUserDBRead();
+        }
+    }
+
+    @Before("execution(* com.zhangtao.service..*.*(..)) "
             + " && @annotation(com.zhangtao.annotation.GoodsDBWriteDataSource) ")
     public void setGoodsDBWriteDataSourceType() {
         DataSourceContextHolder.setGoodsDBWrite();

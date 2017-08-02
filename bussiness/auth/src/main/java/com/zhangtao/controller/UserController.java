@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -80,6 +81,19 @@ public class UserController {
         String value = JSON.toJSONString(userDetails);
         redisService.authset(id, value, 10, TimeUnit.SECONDS);
         return value;
+    }
+
+    @RequestMapping(value = "/add/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    //@RequestParam(value="name", required=true, defaultValue="0")
+    public int InsertMulti(@PathVariable("id") Long id) throws Exception {
+        try {
+
+            return 1;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return 0;
+        }
     }
 }
 
